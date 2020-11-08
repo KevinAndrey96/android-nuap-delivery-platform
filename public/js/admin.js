@@ -118163,6 +118163,21 @@ Vue.component('admin-user-form', {
         language: ''
       }
     };
+  },
+  methods: {
+      onChange(event) {
+          let role = event.target.value
+          let commission = document.getElementById('commission-block');
+          let discount = document.getElementById('discount-block');
+
+          if (role === 'Mayorista') {
+              commission.style.display = 'flex';
+              discount.style.display = 'flex';
+          } else {
+              commission.style.display = 'none';
+              discount.style.display = 'none';
+          }
+      }
   }
 });
 
@@ -118802,6 +118817,8 @@ Vue.component('profile-edit-password-form', {
   methods: {
     onSuccess: function onSuccess(data) {
       if (data.notify) {
+        document.getElementById("password").value = ''
+        document.getElementById("password_confirmation").value = '';
         this.$notify({
           type: data.notify.type,
           title: data.notify.title,
