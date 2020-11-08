@@ -19042,7 +19042,6 @@ exports.default = {
             this.loadData(true);
         },
         populateCurrentStateAndData: function populateCurrentStateAndData(object) {
-
             if (object.current_page > object.last_page && object.total > 0) {
                 this.pagination.state.current_page = object.last_page;
                 this.loadData();
@@ -19061,17 +19060,17 @@ exports.default = {
             var _this7 = this;
 
             this.$modal.show('dialog', {
-                title: 'Warning!',
-                text: 'Do you really want to delete this item?',
-                buttons: [{ title: 'No, cancel.' }, {
-                    title: '<span class="btn-dialog btn-danger">Yes, delete.<span>',
+                title: 'Atención ',
+                text: '¿Estás seguro de que deseas eliminarlo?',
+                buttons: [{ title: 'No, cancelar.' }, {
+                    title: '<span class="btn-dialog btn-danger">Si, eliminar.<span>',
                     handler: function handler() {
                         _this7.$modal.hide('dialog');
                         axios.delete(url).then(function (response) {
                             _this7.loadData();
-                            _this7.$notify({ type: 'success', title: 'Success!', text: response.data.message ? response.data.message : 'Item successfully deleted.' });
+                            _this7.$notify({ type: 'success', title: 'Eliminado', text: response.data.message ? response.data.message : 'Se ha eliminado correctamente.' });
                         }, function (error) {
-                            _this7.$notify({ type: 'error', title: 'Error!', text: error.response.data.message ? error.response.data.message : 'An error has occured.' });
+                            _this7.$notify({ type: 'error', title: 'Error', text: error.response.data.message ? error.response.data.message : 'Ha ocurrido un error.' });
                         });
                     }
                 }]
