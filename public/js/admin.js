@@ -19080,10 +19080,11 @@ exports.default = {
             var _this8 = this;
 
             axios.post(url, row).then(function (response) {
-                _this8.$notify({ type: 'success', title: 'Success!', text: response.data.message ? response.data.message : 'Item successfully changed.' });
+                window.location.replace(response.data.redirect);
+                //_this8.$notify({ type: 'success', title: 'Cambio de estado', text: response.data.message ? response.data.message : 'Item successfully changed.' });
             }, function (error) {
                 row[col] = !row[col];
-                _this8.$notify({ type: 'error', title: 'Error!', text: error.response.data.message ? error.response.data.message : 'An error has occured.' });
+                _this8.$notify({ type: 'error', title: 'Error', text: error.response.data.message ? error.response.data.message : 'An error has occured.' });
             });
         },
 
