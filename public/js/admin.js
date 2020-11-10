@@ -19010,7 +19010,6 @@ exports.default = {
         },
         loadData: function loadData(resetCurrentPage) {
             var _this6 = this;
-
             var options = {
                 params: {
                     per_page: this.pagination.state.per_page,
@@ -19025,7 +19024,6 @@ exports.default = {
             }
 
             Object.assign(options.params, this.filters);
-
             axios.get(this.url, options).then(function (response) {
                 return _this6.populateCurrentStateAndData(response.data.data);
             }, function (error) {
