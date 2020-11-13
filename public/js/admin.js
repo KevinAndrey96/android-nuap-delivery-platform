@@ -118151,32 +118151,15 @@ Vue.component('admin-user-form', {
   mixins: [_app_components_Form_AppForm__WEBPACK_IMPORTED_MODULE_0__["default"]],
   data: function data() {
     return {
-      form: {
-        first_name: '',
-        last_name: '',
-        email: '',
-        password: '',
-        activated: false,
-        forbidden: false,
-        language: ''
-      }
+        form: {
+            email:  '' ,
+            name:  '' ,
+            last_name:  '' ,
+            password:  '' ,
+            identity_number:  ''
+        }
     };
   },
-  methods: {
-      onChange(event) {
-          let role = event.target.value
-          let commission = document.getElementById('commission-block');
-          let discount = document.getElementById('discount-block');
-
-          if (role === 'Mayorista') {
-              commission.style.display = 'flex';
-              discount.style.display = 'flex';
-          } else {
-              commission.style.display = 'none';
-              discount.style.display = 'none';
-          }
-      }
-  }
 });
 
 /***/ }),
