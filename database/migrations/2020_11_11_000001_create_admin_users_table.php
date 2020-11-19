@@ -24,7 +24,6 @@ class CreateAdminUsersTable extends Migration
             $table->string('identity_number');
             $table->string('image_url')->nullable();
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
