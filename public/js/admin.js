@@ -119290,3 +119290,9 @@ module.exports = __webpack_require__(/*! /var/www/html/resources/js/admin/admin.
 /***/ })
 
 /******/ });
+
+// función solo números
+function isNumberKey(evt){
+    let charCode = (evt.which) ? evt.which : evt.keyCode
+    return !(charCode > 31 && (charCode < 48 || charCode > 57));
+}
