@@ -40,7 +40,7 @@ class DistributorController extends Controller
     private $dbDistributorRepository;
 
     /**
-     * UsersController constructor.
+     * DistributorController constructor.
      * @param DbUsersRepositoryInterface $dbUserRepository
      * @param DbDistributorRepositoryInterface $dbDistributorRepository
      */

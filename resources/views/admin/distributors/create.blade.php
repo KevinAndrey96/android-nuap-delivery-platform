@@ -11,10 +11,10 @@
     <div class="container-xl">
         <div class="card">
             <admin-user-form
-                :action="'{{ url('admin/distributor-store') }}'"
-                :activation="!!'{{ $activation }}'"
-                v-cloak
-                inline-template>
+                    :action="'{{ url('admin/distributor-store') }}'"
+                    :activation="!!'{{ $activation }}'"
+                    v-cloak
+                    inline-template>
 
                 <form class="form-horizontal form-create" method="post" @submit.prevent="onSubmit" :action="this.action">
                     <div class="card-header">
@@ -26,10 +26,10 @@
                     </div>
 
                     <div class="card-footer">
-	                    <button type="submit" class="btn btn-primary" :disabled="submiting">
-		                    <i class="fa" :class="submiting ? 'fa-spinner' : 'fa-download'"></i>
+                        <button type="submit" class="btn btn-primary" :disabled="submiting">
+                            <i class="fa" :class="submiting ? 'fa-spinner' : 'fa-download'"></i>
                             &nbsp; Guardar
-	                    </button>
+                        </button>
                     </div>
                 </form>
             </admin-user-form>
