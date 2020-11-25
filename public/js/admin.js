@@ -118158,25 +118158,12 @@ Vue.component('admin-user-form', {
             last_name:  '' ,
             password:  '' ,
             identity_number:  '',
-            latitude: '',
-            longitude: '',
-            address: '',
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
         }
     };
   },
     methods: {
-        setValues() {
-            console.log("latitude1:"+this.form.latitude);
-            console.log("latitude2:"+document.querySelector("input[id=latitude]").value);
-            console.log("latitude3:"+document.getElementById('latitude').value);
-            this.form.latitude = document.getElementById('latitude').value
-            console.log("latitude4:"+this.form.latitude);
-        }
     },
-    mounted() {
-        const validateValues = this.setValues();
-    }
 });
 
 /***/ }),
