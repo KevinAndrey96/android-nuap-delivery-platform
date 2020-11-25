@@ -20594,7 +20594,7 @@ var defaults = {
     static: false,
     time_24hr: false,
     weekNumbers: false,
-    wrap: false,
+    wrap: false
 };
 
 var english = {
@@ -118149,29 +118149,33 @@ __webpack_require__.r(__webpack_exports__);
 
 Vue.component('admin-user-form', {
   mixins: [_app_components_Form_AppForm__WEBPACK_IMPORTED_MODULE_0__["default"]],
-  data: function data() {
+  data() {
     return {
+        csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
         form: {
             email:  '' ,
             name:  '' ,
             last_name:  '' ,
             password:  '' ,
-            identity_number:  ''
+            identity_number:  '',
+            latitude: '',
+            longitude: '',
+            address: '',
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
         }
     };
   },
     methods: {
-        onSuccess: function onSuccess(data) {
-            if (data.notify) {
-                this.$notify({
-                    type: data.notify.type,
-                    title: data.notify.title,
-                    text: data.notify.message
-                });
-            } else if (data.redirect) {
-                window.location.replace(data.redirect);
-            }
+        setValues() {
+            console.log("latitude1:"+this.form.latitude);
+            console.log("latitude2:"+document.querySelector("input[id=latitude]").value);
+            console.log("latitude3:"+document.getElementById('latitude').value);
+            this.form.latitude = document.getElementById('latitude').value
+            console.log("latitude4:"+this.form.latitude);
         }
+    },
+    mounted() {
+        const validateValues = this.setValues();
     }
 });
 
