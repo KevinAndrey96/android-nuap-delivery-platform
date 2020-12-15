@@ -18789,6 +18789,7 @@ exports.default = {
                 inline: true
             },
             bulkItems: {},
+            commission: 0,
             bulkCheckingAllLoader: false,
             dummy: null
         };
@@ -18984,25 +18985,27 @@ exports.default = {
             var _this5 = this;
 
             var itemsToDelete = (0, _lodash.keys)((0, _lodash.pickBy)(this.bulkItems));
+            var commission = (this.commission);
             var self = this;
 
             this.$modal.show('dialog', {
-                title: 'Warning!',
-                text: 'Do you really want to delete ' + this.clickedBulkItemsCount + ' selected items ?',
-                buttons: [{ title: 'No, cancel.' }, {
-                    title: '<span class="btn-dialog btn-danger">Yes, delete.<span>',
+                title: 'Atención!',
+                text: '¿Quieres actualizar la comisión de los ' + this.clickedBulkItemsCount + ' elementos seleccionados?',
+                buttons: [{ title: 'No, cancelar.' }, {
+                    title: '<span class="btn-dialog btn-danger">Si, actualizar.<span>',
                     handler: function handler() {
                         _this5.$modal.hide('dialog');
                         axios.post(url, {
                             data: {
-                                'ids': itemsToDelete
+                                'ids': itemsToDelete,
+                                'commission': commission
                             }
                         }).then(function (response) {
                             self.bulkItems = {};
                             _this5.loadData();
-                            _this5.$notify({ type: 'success', title: 'Success!', text: response.data.message ? response.data.message : 'Item successfully deleted.' });
+                            _this5.$notify({ type: 'success', title: 'Actualizado', text: response.data.message ? response.data.message : 'Se actualizo correctamente.' });
                         }, function (error) {
-                            _this5.$notify({ type: 'error', title: 'Error!', text: error.response.data.message ? error.response.data.message : 'An error has occured.' });
+                            _this5.$notify({ type: 'error', title: 'Error', text: error.response.data.message ? error.response.data.message : 'Ha ocurrido un error.' });
                         });
                     }
                 }]
@@ -118588,7 +118591,7 @@ Vue.component('bulk-action-form', {
   data: function data() {
     return {
       form: {
-        title: '',
+        commission: '',
         perex: '',
         published_at: '',
         enabled: false
