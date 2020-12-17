@@ -19057,6 +19057,26 @@ exports.default = {
             this.pagination.state.to = object.to;
             this.pagination.state.from = object.from;
         },
+        closeTicket: function closeTicket(url) {
+            var _this7 = this;
+
+            this.$modal.show('dialog', {
+                title: 'Atención ',
+                text: '¿Estás seguro de que deseas cerrar el ticket?',
+                buttons: [{ title: 'No, cancelar.' }, {
+                    title: '<span class="btn-dialog btn-warning">Si, cerrar.<span>',
+                    handler: function handler() {
+                        _this7.$modal.hide('dialog');
+                        axios.delete(url).then(function (response) {
+                            //_this7.loadData();
+                            _this7.$notify({ type: 'success', title: 'Cerrado', text: response.data.message ? response.data.message : 'Se ha cerrado el ticket correctamente.' });
+                        }, function (error) {
+                            _this7.$notify({ type: 'error', title: 'Error', text: error.response.data.message ? error.response.data.message : 'Ha ocurrido un error.' });
+                        });
+                    }
+                }]
+            });
+        },
         deleteItem: function deleteItem(url) {
             var _this7 = this;
 
