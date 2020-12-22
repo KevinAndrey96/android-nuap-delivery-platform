@@ -18990,7 +18990,7 @@ exports.default = {
 
             this.$modal.show('dialog', {
                 title: 'Atención!',
-                text: '¿Quieres actualizar la comisión de los ' + this.clickedBulkItemsCount + ' elementos seleccionados?',
+                text: '¿Quieres actualizar el valor de los ' + this.clickedBulkItemsCount + ' elementos seleccionados?',
                 buttons: [{ title: 'No, cancelar.' }, {
                     title: '<span class="btn-dialog btn-danger">Si, actualizar.<span>',
                     handler: function handler() {
