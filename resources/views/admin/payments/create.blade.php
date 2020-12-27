@@ -1,7 +1,7 @@
 @extends('brackets/admin-ui::admin.layout.default')
 
 <head>
-    <title>Solicitar pago</title>
+    <title>Cuenta Bancaria</title>
     <link rel="icon" href="{{URL::asset('images/nuap.png')}}"/>
 </head>
 
@@ -12,7 +12,7 @@
                 <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
                 <form class="form-horizontal form-create">
                     <div class="card-header">
-                        <i class="fa fa-plus"></i>&nbsp; Solicitar pago
+                        <i class="fa fa-bank"></i>&nbsp; Cuenta Bancaria
                     </div>
 
                     <div class="card-body">
@@ -22,7 +22,7 @@
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">
                             <i class="fa fa-download"></i>
-                            &nbsp; Solicitar
+                            &nbsp; Guardar
                         </button>
                     </div>
                 </form>

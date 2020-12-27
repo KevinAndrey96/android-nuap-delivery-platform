@@ -43,7 +43,6 @@
                         <table class="table table-hover table-listing">
                             <thead>
                             <tr>
-                                <!--<th is='sortable' :column="'id'">Imagen</th>-->
                                 <th is='sortable' :column="'id'">ID</th>
                                 <th is='sortable' :column="'name'">Nombre</th>
                                 <th is='sortable' :column="'sku'">Sku</th>
@@ -53,13 +52,12 @@
                                 <th is='sortable' :column="'stock'">Inventario</th>
                                 <th is='sortable' :column="'purchase_price'">Precio de Compra</th>
                                 <th is='sortable' :column="'sale_price'">Precio de Venta</th>
-                                <th is='sortable' :column="'status'">Activo</th>
+                                <th is='sortable' :column="'status'">Estado</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr v-for="(item, index) in collection">
-                                <!--<img :src="">-->
                                 <td >@{{ item.id }}</td>
                                 <td >@{{ item.name }}</td>
                                 <td >@{{ item.sku }}</td>
@@ -97,7 +95,13 @@
                             </tr>
                             </tbody>
                         </table>
-
+                        <div class="row" v-if="pagination.state.total > 0">
+                            <div class="col-sm">
+                            </div>
+                            <div class="col-sm-auto">
+                                <pagination></pagination>
+                            </div>
+                        </div>
                         <div class="no-items-found" v-if="!collection.length > 0">
                             <i class="icon-magnifier"></i>
                             <h3>No se encontraron registros</h3>

@@ -140,7 +140,7 @@
 <div class="form-group row align-items-center" :class="{'has-danger': errors.has('special_price'), 'has-success': this.fields.special_price && this.fields.special_price.valid }">
     <label for="special_price" class="col-form-label text-md-right" :class="'col-md-3'">Descuento</label>
     <div :class="'col-md-4 col-md-9 col-xl-7'">
-        <input min="0" max="100" type="number" step="0.1" required class="form-control" :class="{'form-control-danger': errors.has('special_price'), 'form-control-success': this.fields.special_price && this.fields.special_price.valid}" id="special_price" name="special_price" placeholder="Precio Especial">
+        <input min="0" max="100" type="number" step="0.1" required class="form-control" :class="{'form-control-danger': errors.has('special_price'), 'form-control-success': this.fields.special_price && this.fields.special_price.valid}" id="special_price" name="special_price" placeholder="Descuento">
         <div v-if="errors.has('special_price')" class="form-control-feedback form-text" v-cloak>@{{ errors.first('special_price') }}</div>
     </div>
 </div>
