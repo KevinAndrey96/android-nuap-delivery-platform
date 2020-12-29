@@ -14,7 +14,7 @@ class IndexPayment extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'orderBy' => 'in:id,value,request_date,payment_date,status|nullable',
