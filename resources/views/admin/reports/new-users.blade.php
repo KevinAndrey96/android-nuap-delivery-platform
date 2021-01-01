@@ -11,7 +11,7 @@
             <div class="card-header">
                 <i class="fa fa-plus"></i>&nbsp; Reporte de Usuarios
             </div>
-            <canvas id="bar-chart" width="800" height="450"></canvas>
+            <canvas id="densityChart" width="600" height="400"></canvas>
         </div>
     </div>
     <script src="../../../../js/bar-chart.js"></script>
