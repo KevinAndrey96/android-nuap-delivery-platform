@@ -165,17 +165,15 @@ class LoginController
                 new LoginTransformer(),
                 'data'
             );
-
         } catch (Exception $exception) {
             $error = new ErrorObject();
             $error->setCode(self::GENERAL_ERROR)
                 ->setTitle(self::ERROR_TITLE)
-                ->setDetail(__('general.server.errors.unexpected_error'))
+                ->setDetail('Ha ocurrido un error inesperado')
                 ->setStatus((string) Response::HTTP_INTERNAL_SERVER_ERROR);
             $this->jsonErrorFormat->add($error);
 
             return $this->jsonApiResponse->respondError($this->jsonErrorFormat, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
     }
 }
