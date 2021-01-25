@@ -142,7 +142,7 @@ class ReplyTicketController
             }
 
             $ticket = $this->dbTicketRepository->findByID($request['ticket_id']);
-            if ($ticket === Ticket::CLOSED) {
+            if ($ticket->status === Ticket::CLOSED) {
                 $error = new ErrorObject();
                 $error->setCode(self::TICKET_CLOSED)
                     ->setTitle(self::ERROR_TITLE)
