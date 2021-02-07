@@ -67,7 +67,7 @@ class CreateTicketController
     private $jsonErrorFormat;
 
     /**
-     * RegisterClientController constructor.
+     * CreateTicketController constructor.
      * @param ArrayResponseInterface $arrayResponse
      * @param HttpObject $httpObject
      * @param ErrorObject $errorObject
