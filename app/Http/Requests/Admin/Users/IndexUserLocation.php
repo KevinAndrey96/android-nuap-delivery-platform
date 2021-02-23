@@ -17,7 +17,7 @@ class IndexUserLocation extends FormRequest
     public function rules()
     {
         return [
-            'orderBy' => 'in:id,city,location,neighborhood,address|nullable',
+            'orderBy' => 'in:id,country,city,location,neighborhood,address|nullable',
             'orderDirection' => 'in:asc,desc|nullable',
             'search' => 'string|nullable',
             'page' => 'integer|nullable',
