@@ -252,6 +252,14 @@
     </div>
 </div>
 
+<div class="form-group row align-items-center" :class="{'has-danger': errors.has('position'), 'has-success': this.fields.position && this.fields.position.valid }">
+    <label for="name" class="col-form-label text-md-right" :class="isFormLocalized ? 'col-md-4' : 'col-md-3'">Cargo</label>
+    <div :class="isFormLocalized ? 'col-md-4' : 'col-md-9 col-xl-7'">
+        <input type="text" v-model="form.position" v-validate="'required'" @input="validate($event)" class="form-control" :class="{'form-control-danger': errors.has('position'), 'form-control-success': this.fields.position && this.fields.position.valid}" id="position" name="position" placeholder="Cargo">
+        <div v-if="errors.has('position')" class="form-control-feedback form-text" v-cloak>@{{ errors.first('position') }}</div>
+    </div>
+</div>
+
 <div class="form-group row align-items-center" :class="{'has-danger': errors.has('name'), 'has-success': this.fields.name && this.fields.name.valid }">
     <label for="name" class="col-form-label text-md-right" :class="isFormLocalized ? 'col-md-4' : 'col-md-3'">Nombres</label>
     <div :class="isFormLocalized ? 'col-md-4' : 'col-md-9 col-xl-7'">
@@ -271,7 +279,7 @@
 <div class="form-group row align-items-center" :class="{'has-danger': errors.has('identity_number'), 'has-success': this.fields.identity_number && this.fields.identity_number.valid }">
     <label for="identity_number" class="col-form-label text-md-right" :class="isFormLocalized ? 'col-md-4' : 'col-md-3'">Número de identificación</label>
     <div :class="isFormLocalized ? 'col-md-4' : 'col-md-9 col-xl-7'">
-        <input type="text" v-model="form.identity_number" v-validate="'required'" @input="validate($event)" class="form-control" :class="{'form-control-danger': errors.has('identity_number'), 'form-control-success': this.fields.identity_number && this.fields.identity_number.valid}" id="identity_number" name="identity_number" placeholder="Número de identificación">
+        <input onkeypress="return isNumberKey(event)" type="text" v-model="form.identity_number" v-validate="'required'" @input="validate($event)" class="form-control" :class="{'form-control-danger': errors.has('identity_number'), 'form-control-success': this.fields.identity_number && this.fields.identity_number.valid}" id="identity_number" name="identity_number" placeholder="Número de identificación">
         <div v-if="errors.has('identity_number')" class="form-control-feedback form-text" v-cloak>@{{ errors.first('identity_number') }}</div>
     </div>
 </div>
