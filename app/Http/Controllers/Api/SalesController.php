@@ -157,7 +157,7 @@ class SalesController
                 $error = new ErrorObject();
                 $error->setCode(self::ADDRESS_NOT_FOUND)
                     ->setTitle(self::ERROR_TITLE)
-                    ->setDetail('No se encontr贸 la direcci贸n enviada.')
+                    ->setDetail('No se encontró la dirección enviada.')
                     ->setStatus((string) Response::HTTP_BAD_REQUEST);
                 $this->jsonErrorFormat->add($error);
 
