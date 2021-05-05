@@ -10,6 +10,7 @@ use App\Libraries\Responders\JsonApiErrorsFormatter;
 use App\Models\SessionLog;
 use App\Models\User;
 use App\Repositories\Contracts\DbUsersRepositoryInterface;
+use App\Repositories\DbBalanceRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
@@ -175,7 +176,7 @@ class LoginController
 
             return $this->arrayResponse->responseWithItem(
                 $this->httpObject,
-                new LoginTransformer(),
+                new LoginTransformer(new DbBalanceRepository()),
                 'data'
             );
         } catch (Exception $exception) {
