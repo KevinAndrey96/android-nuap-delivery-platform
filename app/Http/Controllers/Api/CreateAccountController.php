@@ -73,6 +73,7 @@ class CreateAccountController
      * @param HttpObject $httpObject
      * @param JsonApiResponseInterface $jsonApiResponse
      * @param DbUsersRepositoryInterface $dbUserRepository
+     * @param DbBankAccountRepositoryInterface $dbBankAccountRepository
      * @param JsonApiErrorsFormatter $jsonApiErrorsFormatter
      */
     public function __construct(
