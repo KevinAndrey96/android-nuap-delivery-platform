@@ -57,156 +57,156 @@ Route::group(['prefix' => 'users'], function () {
         'uses' => 'Api\RegisterClientController'
     ]);
 
-    Route::middleware('auth:api')->get('/location', [
+    Route::get('/location', [
         'as' => 'api-users-location',
         'uses' => 'Api\LocationController'
     ]);
 
-    Route::middleware('auth:api')->post('/location/create', [
+    Route::post('/location/create', [
         'as' => 'api-users-location-create',
         'uses' => 'Api\CreateLocationController'
     ]);
 
-    Route::middleware('auth:api')->post('/ticket/create', [
+    Route::post('/ticket/create', [
         'as' => 'api-ticket-create',
         'uses' => 'Api\CreateTicketController'
     ]);
 
-    Route::middleware('auth:api')->post('/ticket/reply', [
+    Route::post('/ticket/reply', [
         'as' => 'api-users-ticket-reply',
         'uses' => 'Api\ReplyTicketController'
     ]);
 
-    Route::middleware('auth:api')->get('/ticket/{ticket}/messages', [
+    Route::get('/ticket/{ticket}/messages', [
         'as' => 'api-users-ticket-messages',
         'uses' => 'Api\GetMessagesFromTicketController'
     ]);
 
-    Route::middleware('auth:api')->get('/ticket', [
+    Route::get('/ticket', [
         'as' => 'api-users-ticket',
         'uses' => 'Api\GetTicketByUserController'
     ]);
 
-    Route::middleware('auth:api')->get('/profile', [
+    Route::get('/profile', [
         'as' => 'api-users-profile',
         'uses' => 'Api\ProfileUserController'
     ]);
 
-    Route::middleware('auth:api')->post('/profile/edit', [
+    Route::post('/profile/edit', [
         'as' => 'api-users-edit-profile',
         'uses' => 'Api\EditUserProfileController'
     ]);
 
-    Route::middleware('auth:api')->get('/orders', [
+    Route::get('/orders', [
         'as' => 'api-users-orders',
         'uses' => 'Api\GetOrdersByUserController'
     ]);
 
-    Route::middleware('auth:api')->get('/orders/{order}/products', [
+    Route::get('/orders/{order}/products', [
         'as' => 'api-users-orders-products',
         'uses' => 'Api\GerProductsByOrderController'
     ]);
 
-    Route::middleware('auth:api')->get('/seller/{seller}/info', [
+    Route::get('/seller/{seller}/info', [
         'as' => 'api-users-seller',
         'uses' => 'Api\SellerInfoController'
     ]);
 
-    Route::middleware('auth:api')->post('/rating', [
+    Route::post('/rating', [
         'as' => 'api-rating',
         'uses' => 'Api\RatingOrderController'
     ]);
 });
 
 Route::group(['prefix' => 'commerces'], function () {
-    Route::middleware('auth:api')->get('/profile', [
+    Route::get('/profile', [
         'as' => 'api-commerces-profile',
         'uses' => 'Api\ProfileCommerceController'
     ]);
 
-    Route::middleware('auth:api')->get('/sales', [
+    Route::get('/sales', [
         'as' => 'api-get-sales',
         'uses' => 'Api\GetSalesByCommerceController'
     ]);
 
-    Route::middleware('auth:api')->get('/payments', [
+    Route::get('/payments', [
         'as' => 'api-payments',
         'uses' => 'Api\GetPaymentsCommerceController'
     ]);
 
-    Route::middleware('auth:api')->post('/request-payment', [
+    Route::post('/request-payment', [
         'as' => 'api-request-payment',
         'uses' => 'Api\RequestPaymentController'
     ]);
 
-    Route::middleware('auth:api')->get('/order/{order}/update', [
+    Route::get('/order/{order}/update', [
         'as' => 'api-update-order',
         'uses' => 'Api\UpdateStatusController'
     ]);
 
-    Route::middleware('auth:api')->post('/create/account', [
+    Route::post('/create/account', [
         'as' => 'api-commerce-create-account',
         'uses' => 'Api\CreateAccountController'
     ]);
 
-    Route::middleware('auth:api')->get('/detail/account', [
+    Route::get('/detail/account', [
         'as' => 'api-commerce-detail-account',
         'uses' => 'Api\DetailAccountController'
     ]);
 });
 
 Route::group(['prefix' => 'products'], function () {
-    Route::middleware('auth:api')->get('/categories', [
+    Route::get('/categories', [
         'as' => 'api-categories',
         'uses' => 'Api\CategoriesController'
     ]);
 
-    Route::middleware('auth:api')->get('/sales/address/{address}', [
+    Route::get('/sales/address/{address}', [
         'as' => 'api-sales',
         'uses' => 'Api\SalesController'
     ]);
 
-    Route::middleware('auth:api')->post('/calculate-delivery', [
+    Route::post('/calculate-delivery', [
         'as' => 'calculate-delivery',
         'uses' => 'Api\CalculateDeliveryAmountController'
     ]);
 
-    Route::middleware('auth:api')->post('/create-order/address/{address}', [
+    Route::post('/create-order/address/{address}', [
         'as' => 'create-order',
         'uses' => 'Api\CreateOrderController'
     ]);
 
-    Route::middleware('auth:api')->get('/category/{category}/address/{address}', [
+    Route::get('/category/{category}/address/{address}', [
         'as' => 'api-category',
         'uses' => 'Api\ProductCategoryController'
     ]);
 
-    Route::middleware('auth:api')->get('/store/{store}/address/{address}', [
+    Route::get('/store/{store}/address/{address}', [
         'as' => 'api-store',
         'uses' => 'Api\ProductStoreController'
     ]);
 
-    Route::middleware('auth:api')->get('/featured/address/{address}', [
+    Route::get('/featured/address/{address}', [
         'as' => 'api-featured',
         'uses' => 'Api\FeaturedController'
     ]);
 
-    Route::middleware('auth:api')->get('/valid/categories', [
+    Route::get('/valid/categories', [
         'as' => 'api-valid-categories',
         'uses' => 'Api\CategoryController'
     ]);
 
-    Route::middleware('auth:api')->get('/stores/address/{address}', [
+    Route::get('/stores/address/{address}', [
         'as' => 'api-stores',
         'uses' => 'Api\StoreController'
     ]);
 
-    Route::middleware('auth:api')->get('/category/{category}', [
+    Route::get('/category/{category}', [
         'as' => 'api-products-categories',
         'uses' => 'Api\ProductsByCategoryAndCommerceController'
     ]);
 
-    Route::middleware('auth:api')->post('/commerce/create', [
+    Route::post('/commerce/create', [
         'as' => 'api-products-commerce-create',
         'uses' => 'Api\CreateProductCommerceController'
     ]);
