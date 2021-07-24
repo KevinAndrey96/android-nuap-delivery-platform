@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\ValidateJWT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -57,7 +58,7 @@ Route::group(['prefix' => 'users'], function () {
         'uses' => 'Api\RegisterClientController'
     ]);
 
-    Route::get('/location', [
+    Route::middleware([ValidateJWT::class])->get('/location', [
         'as' => 'api-users-location',
         'uses' => 'Api\LocationController'
     ]);
