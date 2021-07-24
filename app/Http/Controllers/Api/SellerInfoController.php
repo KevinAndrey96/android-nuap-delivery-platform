@@ -120,10 +120,7 @@ class SellerInfoController
     public function __invoke(Request $request, int $seller_id): JsonResponse
     {
         try {
-            //$token = $request->header('Authorization');
-            //$token = explode(' ',$token)[1];
-
-            $user = $this->dbUserRepository->getUserByToken('TdLI8xzx11Mtane7q6QuovEHT3ob5U0yMo9ervfvmkG48aV8O7T6vpfSuCzf');
+            $user = $this->dbUserRepository->findByID($request['user_id']);
 
             if (is_null($user)) {
                 $error = new ErrorObject();
