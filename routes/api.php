@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Middleware\ValidateJWT;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -63,42 +62,42 @@ Route::group(['prefix' => 'users'], function () {
         'uses' => 'Api\LocationController'
     ]);
 
-    Route::post('/location/create', [
+    Route::middleware([ValidateJWT::class])->post('/location/create', [
         'as' => 'api-users-location-create',
         'uses' => 'Api\CreateLocationController'
     ]);
 
-    Route::post('/ticket/create', [
+    Route::middleware([ValidateJWT::class])->post('/ticket/create', [
         'as' => 'api-ticket-create',
         'uses' => 'Api\CreateTicketController'
     ]);
 
-    Route::post('/ticket/reply', [
+    Route::middleware([ValidateJWT::class])->post('/ticket/reply', [
         'as' => 'api-users-ticket-reply',
         'uses' => 'Api\ReplyTicketController'
     ]);
 
-    Route::get('/ticket/{ticket}/messages', [
+    Route::middleware([ValidateJWT::class])->get('/ticket/{ticket}/messages', [
         'as' => 'api-users-ticket-messages',
         'uses' => 'Api\GetMessagesFromTicketController'
     ]);
 
-    Route::get('/ticket', [
+    Route::middleware([ValidateJWT::class])->get('/ticket', [
         'as' => 'api-users-ticket',
         'uses' => 'Api\GetTicketByUserController'
     ]);
 
-    Route::get('/profile', [
+    Route::middleware([ValidateJWT::class])->get('/profile', [
         'as' => 'api-users-profile',
         'uses' => 'Api\ProfileUserController'
     ]);
 
-    Route::post('/profile/edit', [
+    Route::middleware([ValidateJWT::class])->post('/profile/edit', [
         'as' => 'api-users-edit-profile',
         'uses' => 'Api\EditUserProfileController'
     ]);
 
-    Route::get('/orders', [
+    Route::middleware([ValidateJWT::class])->get('/orders', [
         'as' => 'api-users-orders',
         'uses' => 'Api\GetOrdersByUserController'
     ]);
@@ -108,106 +107,106 @@ Route::group(['prefix' => 'users'], function () {
         'uses' => 'Api\GerProductsByOrderController'
     ]);
 
-    Route::get('/seller/{seller}/info', [
+    Route::middleware([ValidateJWT::class])->get('/seller/{seller}/info', [
         'as' => 'api-users-seller',
         'uses' => 'Api\SellerInfoController'
     ]);
 
-    Route::post('/rating', [
+    Route::middleware([ValidateJWT::class])->post('/rating', [
         'as' => 'api-rating',
         'uses' => 'Api\RatingOrderController'
     ]);
 });
 
 Route::group(['prefix' => 'commerces'], function () {
-    Route::get('/profile', [
+    Route::middleware([ValidateJWT::class])->get('/profile', [
         'as' => 'api-commerces-profile',
         'uses' => 'Api\ProfileCommerceController'
     ]);
 
-    Route::get('/sales', [
+    Route::middleware([ValidateJWT::class])->get('/sales', [
         'as' => 'api-get-sales',
         'uses' => 'Api\GetSalesByCommerceController'
     ]);
 
-    Route::get('/payments', [
+    Route::middleware([ValidateJWT::class])->get('/payments', [
         'as' => 'api-payments',
         'uses' => 'Api\GetPaymentsCommerceController'
     ]);
 
-    Route::post('/request-payment', [
+    Route::middleware([ValidateJWT::class])->post('/request-payment', [
         'as' => 'api-request-payment',
         'uses' => 'Api\RequestPaymentController'
     ]);
 
-    Route::get('/order/{order}/update', [
+    Route::middleware([ValidateJWT::class])->get('/order/{order}/update', [
         'as' => 'api-update-order',
         'uses' => 'Api\UpdateStatusController'
     ]);
 
-    Route::post('/create/account', [
+    Route::middleware([ValidateJWT::class])->post('/create/account', [
         'as' => 'api-commerce-create-account',
         'uses' => 'Api\CreateAccountController'
     ]);
 
-    Route::get('/detail/account', [
+    Route::middleware([ValidateJWT::class])->get('/detail/account', [
         'as' => 'api-commerce-detail-account',
         'uses' => 'Api\DetailAccountController'
     ]);
 });
 
 Route::group(['prefix' => 'products'], function () {
-    Route::get('/categories', [
+    Route::middleware([ValidateJWT::class])->get('/categories', [
         'as' => 'api-categories',
         'uses' => 'Api\CategoriesController'
     ]);
 
-    Route::get('/sales/address/{address}', [
+    Route::middleware([ValidateJWT::class])->get('/sales/address/{address}', [
         'as' => 'api-sales',
         'uses' => 'Api\SalesController'
     ]);
 
-    Route::post('/calculate-delivery', [
+    Route::middleware([ValidateJWT::class])->post('/calculate-delivery', [
         'as' => 'calculate-delivery',
         'uses' => 'Api\CalculateDeliveryAmountController'
     ]);
 
-    Route::post('/create-order/address/{address}', [
+    Route::middleware([ValidateJWT::class])->post('/create-order/address/{address}', [
         'as' => 'create-order',
         'uses' => 'Api\CreateOrderController'
     ]);
 
-    Route::get('/category/{category}/address/{address}', [
+    Route::middleware([ValidateJWT::class])->get('/category/{category}/address/{address}', [
         'as' => 'api-category',
         'uses' => 'Api\ProductCategoryController'
     ]);
 
-    Route::get('/store/{store}/address/{address}', [
+    Route::middleware([ValidateJWT::class])->get('/store/{store}/address/{address}', [
         'as' => 'api-store',
         'uses' => 'Api\ProductStoreController'
     ]);
 
-    Route::get('/featured/address/{address}', [
+    Route::middleware([ValidateJWT::class])->get('/featured/address/{address}', [
         'as' => 'api-featured',
         'uses' => 'Api\FeaturedController'
     ]);
 
-    Route::get('/valid/categories', [
+    Route::middleware([ValidateJWT::class])->get('/valid/categories', [
         'as' => 'api-valid-categories',
         'uses' => 'Api\CategoryController'
     ]);
 
-    Route::get('/stores/address/{address}', [
+    Route::middleware([ValidateJWT::class])->get('/stores/address/{address}', [
         'as' => 'api-stores',
         'uses' => 'Api\StoreController'
     ]);
 
-    Route::get('/category/{category}', [
+    Route::middleware([ValidateJWT::class])->get('/category/{category}', [
         'as' => 'api-products-categories',
         'uses' => 'Api\ProductsByCategoryAndCommerceController'
     ]);
 
-    Route::post('/commerce/create', [
+    Route::middleware([ValidateJWT::class])->post('/commerce/create', [
         'as' => 'api-products-commerce-create',
         'uses' => 'Api\CreateProductCommerceController'
     ]);
