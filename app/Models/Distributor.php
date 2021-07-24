@@ -29,6 +29,7 @@ use Illuminate\Foundation\Application;
  * @property string url_header
  * @property string url_logo
  * @property string resource_url
+ * @property string resource_edit_url
  * @property float shipping_cost
  * @property float distance
  *
@@ -97,7 +98,7 @@ class Distributor extends Model
     /**
      * @var string[]
      */
-    protected $appends = ['resource_url'];
+    protected $appends = ['resource_url', 'resource_edit_url'];
 
     /**
      * @return UrlGenerator|Application|string
@@ -105,5 +106,13 @@ class Distributor extends Model
     public function getResourceUrlAttribute()
     {
         return url('/admin/users/'.$this->getAttributeValue('user_id'));
+    }
+
+    /**
+     * @return UrlGenerator|Application|string
+     */
+    public function getResourceEditUrlAttribute()
+    {
+        return url('/admin/distributor/'.$this->getAttributeValue('user_id'));
     }
 }
