@@ -49,9 +49,9 @@ class jwt
 
     /**
      * @param string $jwt
-     * @return bool
+     * @return int
      */
-    public function validateJWT(string $jwt): bool
+    public function validateJWT(string $jwt): int
     {
         // get the local secret key
         $secret = getenv('SECRET');
@@ -72,7 +72,11 @@ class jwt
         $signature = hash_hmac('sha256', $base64UrlHeader . '.' . $base64UrlPayload, $secret, true);
         $base64UrlSignature = $this->base64UrlEncode($signature);
 
-        return ($base64UrlSignature === $signatureProvided);
+        if ($base64UrlSignature === $signatureProvided) {
+            return json_decode($payload)->user_id;
+        }
+
+        return 0;
     }
 
     /**
