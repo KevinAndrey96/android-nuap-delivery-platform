@@ -64,7 +64,7 @@ class ValidateJWT
 
         $result = $jwt->validateJWT($request['api_token']);
 
-        if (! $result) {
+        if ($result === 0) {
             $error = new ErrorObject();
             $error->setCode(self::TOKEN_NOT_VALID)
                 ->setTitle('Error')
@@ -75,6 +75,7 @@ class ValidateJWT
             return $this->jsonApiResponse->respondError($this->jsonErrorFormat, Response::HTTP_BAD_REQUEST);
         }
 
+        $request['user_id'] = $result;
         return $next($request);
     }
 }
