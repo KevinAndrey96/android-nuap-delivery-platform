@@ -13,6 +13,7 @@ use Illuminate\Foundation\Application;
  * @property string last_name
  * @property string identity_number
  * @property string resource_url
+ * @property string resource_edit_url
  *
  * @package App\Models
  * @method static where(string $string, int $userID)
@@ -53,7 +54,7 @@ class Client extends Model
     /**
      * @var string[]
      */
-    protected $appends = ['resource_url'];
+    protected $appends = ['resource_url', 'resource_edit_url'];
 
     /**
      * @return UrlGenerator|Application|string
@@ -61,5 +62,13 @@ class Client extends Model
     public function getResourceUrlAttribute()
     {
         return url('/admin/users/'.$this->getAttribute('user_id'));
+    }
+
+    /**
+     * @return UrlGenerator|Application|string
+     */
+    public function getResourceEditUrlAttribute()
+    {
+        return url('/admin/client/'.$this->getAttributeValue('user_id'));
     }
 }

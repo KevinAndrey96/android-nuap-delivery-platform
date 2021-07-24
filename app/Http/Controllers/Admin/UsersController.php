@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Users\CreateUserLocation;
 use App\Http\Requests\Admin\Users\IndexUserLocation;
 use App\Http\Requests\Admin\Users\LoginUsers;
+use App\Models\Distributor;
 use App\Models\SessionLog;
 use App\Models\User;
 use App\Models\UserLocation;
@@ -327,6 +328,7 @@ class UsersController extends Controller
             ];
 
             if ($user->role == User::DISTRIBUTOR_ROLE) {
+                /** @var Distributor $distributor */
                 $distributor = $this->dbDistributorRepository->findByUserID($user->id);
                 $data['distributor_id'] = $distributor->id;
                 $data['business_name'] = $distributor->business_name;
@@ -346,7 +348,7 @@ class UsersController extends Controller
                     'user' => json_encode($data),
                     'activation' => $userAdmin->name,
                     'role' => $userAdmin->role,
-                    'url' => $distributor->resource_url,
+                    'url' => $distributor->resource_edit_url,
                     'business_name' => $distributor->business_name
                 ]);
             }
@@ -372,7 +374,7 @@ class UsersController extends Controller
                     'user' => json_encode($data),
                     'activation' => $userAdmin->name,
                     'role' => $userAdmin->role,
-                    'url' => $commerce->resource_url,
+                    'url' => $commerce->resource_edit_url,
                     'business_name' => $commerce->business_name
                 ]);
             }
@@ -388,7 +390,7 @@ class UsersController extends Controller
                     'user' => json_encode($data),
                     'activation' => $userAdmin->name,
                     'role' => $userAdmin->role,
-                    'url' => $client->resource_url,
+                    'url' => $client->resource_edit_url,
                     'business_name' => $client->name
                 ]);
             }
