@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Transformers;
 
+use App\Libraries\jwt;
 use App\Models\User;
 use App\Repositories\Contracts\DbBalanceRepositoryInterface;
 use League\Fractal\TransformerAbstract;
@@ -39,7 +40,7 @@ class LoginTransformer extends TransformerAbstract
             'phone' => $user->phone,
             'phone_validated' => (int) $user->phone_validated,
             'phone_validated_date' => $user->phone_validated_date,
-            'api_token' => $user->api_token,
+            'api_token' => $this->jwtToken($user->id),
             'balance' => $this->getBalance($user)
         ];
     }
@@ -71,5 +72,14 @@ class LoginTransformer extends TransformerAbstract
     {
         $currencies['COP'] = array(0, ',', '.');
         return number_format($floatcurr, $currencies[$curr][0], $currencies[$curr][1], $currencies[$curr][2]);
+    }
+
+    /**
+     * @param int $userID
+     * @return string
+     */
+    public function jwtToken(int $userID): string {
+        $jwt = new jwt();
+        return $jwt->generateJWT($userID);
     }
 }
