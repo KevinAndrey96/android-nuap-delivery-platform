@@ -98,7 +98,6 @@ class ProductStoreController
      * SalesController constructor.
      * @param ArrayResponseInterface $arrayResponse
      * @param HttpObject $httpObject
-     * @param ErrorObject $errorObject
      * @param JsonApiResponseInterface $jsonApiResponse
      * @param DbUsersRepositoryInterface $dbUserRepository
      * @param DbProductRepositoryInterface $dbProductRepository
@@ -109,7 +108,6 @@ class ProductStoreController
     public function __construct(
         ArrayResponseInterface $arrayResponse,
         HttpObject $httpObject,
-        ErrorObject $errorObject,
         JsonApiResponseInterface $jsonApiResponse,
         DbUsersRepositoryInterface $dbUserRepository,
         DbProductRepositoryInterface $dbProductRepository,
@@ -119,7 +117,6 @@ class ProductStoreController
     ) {
         $this->arrayResponse = $arrayResponse;
         $this->httpObject = $httpObject;
-        $this->errorObject = $errorObject;
         $this->jsonApiResponse = $jsonApiResponse;
         $this->dbUserRepository = $dbUserRepository;
         $this->dbProductRepository = $dbProductRepository;

@@ -206,6 +206,7 @@ class ProductController extends Controller
             if (!is_dir($productImages)) {
                 mkdir($productImages, 0777, true);
             }
+
             $images = $_FILES['image'];
             if ($images['name'] != '') {
                 $ext = pathinfo($images['name'], PATHINFO_EXTENSION);

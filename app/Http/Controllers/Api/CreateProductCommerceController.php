@@ -151,7 +151,23 @@ class CreateProductCommerceController
                 return $this->jsonApiResponse->respondError($this->jsonErrorFormat, Response::HTTP_BAD_REQUEST);
             }
 
-            if (is_null($request->input('product_id'))) {
+            $productImages = 'product-images/user/'.$user->id."/";
+
+            if (! is_dir($productImages)) {
+                mkdir($productImages, 0777, true);
+            }
+
+            define('UPLOAD_DIR', $productImages);
+            $img = $request['img'];
+            $img = str_replace('data:image/png;base64,', '', $img);
+            $img = str_replace(' ', '+', $img);
+            $data = base64_decode($img);
+            $file = UPLOAD_DIR . uniqid() . '.png';
+
+            file_put_contents($file, $data);
+
+            if (is_null($request->input('product_id')))
+            {
                 $data = [];
                 $data['status'] = Product::STATUS_INACTIVE;
                 $data['position'] = 0;
