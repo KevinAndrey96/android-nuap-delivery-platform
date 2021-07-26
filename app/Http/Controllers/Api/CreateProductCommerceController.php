@@ -151,20 +151,23 @@ class CreateProductCommerceController
                 return $this->jsonApiResponse->respondError($this->jsonErrorFormat, Response::HTTP_BAD_REQUEST);
             }
 
-            $productImages = 'product-images/user/'.$user->id."/";
+            $file = null;
+            if (isset($request['img'])) {
+                $productImages = 'product-images/user/' . $user->id . '/';
 
-            if (! is_dir($productImages)) {
-                mkdir($productImages, 0777, true);
+                if (!is_dir($productImages)) {
+                    mkdir($productImages, 0777, true);
+                }
+
+                define('UPLOAD_DIR', $productImages);
+                $img = $request['img'];
+                $img = str_replace('data:image/png;base64,', '', $img);
+                $img = str_replace(' ', '+', $img);
+                $data = base64_decode($img);
+                $file = UPLOAD_DIR . uniqid() . '.png';
+
+                file_put_contents($file, $data);
             }
-
-            define('UPLOAD_DIR', $productImages);
-            $img = $request['img'];
-            $img = str_replace('data:image/png;base64,', '', $img);
-            $img = str_replace(' ', '+', $img);
-            $data = base64_decode($img);
-            $file = UPLOAD_DIR . uniqid() . '.png';
-
-            file_put_contents($file, $data);
 
             if (is_null($request->input('product_id')))
             {
@@ -187,6 +190,11 @@ class CreateProductCommerceController
                 $data['special_price'] = $request->input('special_price');
                 $data['is_featured'] = $request->input('is_featured');
                 $data['has_special_price'] = $request->input('has_special_price');
+
+                if (! is_null($file)) {
+                    $data['image'] = $file;
+                }
+
                 $product = Product::create($data);
 
                 //send email
@@ -226,6 +234,11 @@ class CreateProductCommerceController
                 $product->special_price = $request->input('special_price');
                 $product->is_featured = $request->input('is_featured');
                 $product->has_special_price = $request->input('has_special_price');
+
+                if (! is_null($file)) {
+                    $product->image = $file;
+                }
+
                 $product->save();
             }
 
