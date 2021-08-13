@@ -162,6 +162,17 @@ class RequestPaymentController
             }
 
             $balance = $this->dbBalanceRepository->findByUserID($user->id);
+            if (is_null($balance)) {
+                $error = new ErrorObject();
+                $error->setCode(self::VALUE_NOT_AVAILABLE)
+                    ->setTitle(self::ERROR_TITLE)
+                    ->setDetail('No puedes realizar el retiro, por favor verifica tu saldo.')
+                    ->setStatus((string) Response::HTTP_BAD_REQUEST);
+                $this->jsonErrorFormat->add($error);
+
+                return $this->jsonApiResponse->respondError($this->jsonErrorFormat, Response::HTTP_BAD_REQUEST);
+            }
+
             if ($request['value'] <= $balance->requested_value) {
                 $account = $this->dbBankAccountRepository->findByUserID($user->id);
                 $payment['user_id'] = $user->id;
@@ -178,7 +189,7 @@ class RequestPaymentController
                 $error = new ErrorObject();
                 $error->setCode(self::VALUE_NOT_AVAILABLE)
                     ->setTitle(self::ERROR_TITLE)
-                    ->setDetail('No cuentas con la cantidad de dinero solicitada.')
+                    ->setDetail('No puedes realizar el retiro, por favor verifica tu saldo.')
                     ->setStatus((string) Response::HTTP_BAD_REQUEST);
                 $this->jsonErrorFormat->add($error);
 

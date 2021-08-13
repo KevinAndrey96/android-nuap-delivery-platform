@@ -487,15 +487,20 @@ class PaymentController extends Controller
      */
     public function changeStatusAccount(Request $request)
     {
-        $user = Session::get('user');
+        $userAdmin = Session::get('user');
 
-        if (isset($user) && $user->role == User::ADMIN_ROLE) {
+        if (isset($userAdmin) && $userAdmin->role === User::ADMIN_ROLE) {
 
             $account = $this->dbBankAccountRepository->findByID($request['account_id']);
             $account->status = $account->status == BankAccount::ACCOUNT_INACTIVE ? BankAccount::ACCOUNT_ACTIVE : BankAccount::ACCOUNT_INACTIVE;
             $account->save();
 
-            return redirect('/admin/distributor-list');
+            $user = $this->dbUserRepository->findByID($account->user_id);
+            if ($user->role === User::DISTRIBUTOR_ROLE){
+                return redirect('/admin/distributor-list');
+            }
+
+            return redirect('/admin/commerce-list');
         }
 
         return redirect('/admin/user-session');

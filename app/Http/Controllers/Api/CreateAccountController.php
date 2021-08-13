@@ -7,11 +7,15 @@ use App\Libraries\Responders\Contracts\JsonApiResponseInterface;
 use App\Libraries\Responders\ErrorObject;
 use App\Libraries\Responders\HttpObject;
 use App\Libraries\Responders\JsonApiErrorsFormatter;
+use App\Mail\SendEmail;
 use App\Models\BankAccount;
+use App\Models\Commerce;
+use App\Models\User;
 use App\Repositories\Contracts\DbBankAccountRepositoryInterface;
 use App\Repositories\Contracts\DbUsersRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Exception;
@@ -153,6 +157,24 @@ class CreateAccountController
             $account->save();
 
             $this->httpObject->setItem($account);
+
+            //send email
+            $admin = User::where('role', User::ADMIN_ROLE)->get();
+            $emails = [];
+            foreach ($admin as $item) {
+                $emails[] = $item->email;
+            }
+
+            $commerce = Commerce::where('user_id', $user->id)->first();
+            Mail::to($emails)->send(new SendEmail(
+                    '',
+                    sprintf('%s ha creado o actualizado su cuenta bancaria, por favor revisalo lo antes
+                                posible para gestionar su aprobación. Click en el siguiente enlace para ver esta cuenta 
+                                https://thenuap.com/admin/users/'.$user->id.'/view-account',
+                        $commerce->business_name),
+                    '¡Han creado o actualizado una cuenta bancaria!.'
+                )
+            );
 
             return $this->arrayResponse->responseWithItem(
                 $this->httpObject,

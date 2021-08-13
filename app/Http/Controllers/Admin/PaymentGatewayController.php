@@ -72,7 +72,7 @@ class PaymentGatewayController extends Controller
         $description = substr($description, 0, -3);
         $name = substr($name, 0, -3). ')';
         return view('admin.payments.payment-gateway', [
-            'key' => env('EPAYCO_PUBLIC_KEY'),
+            'key' => '***REMOVED***',
             'amount' => $total,
             'name' => $name,
             'description' => $description,
