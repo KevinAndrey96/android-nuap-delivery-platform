@@ -67,6 +67,11 @@ Route::group(['prefix' => 'users'], function () {
         'uses' => 'Api\CreateLocationController'
     ]);
 
+    Route::middleware([ValidateJWT::class])->get('/location/{address_id}/delete', [
+        'as' => 'api-users-location-delete',
+        'uses' => 'Api\DeleteLocationController'
+    ]);
+
     Route::middleware([ValidateJWT::class])->post('/ticket/create', [
         'as' => 'api-ticket-create',
         'uses' => 'Api\CreateTicketController'
