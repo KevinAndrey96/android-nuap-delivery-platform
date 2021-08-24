@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Transformers\LocationTransformer;
@@ -16,7 +17,7 @@ use Illuminate\Http\Request;
 use Exception;
 
 /**
- * Class RegisterClientController
+ * Class CreateLocationController
  * @package App\Http\Controllers\Api
  */
 class CreateLocationController
@@ -24,27 +25,22 @@ class CreateLocationController
     /**
      * @type string
      */
-    protected const ERROR_TITLE = 'Error';
+    private const ERROR_TITLE = 'Error';
 
     /**
      * @type string
      */
-    protected const USER_NOT_FOUND = 'USER_NOT_FOUND';
+    private const USER_NOT_FOUND = 'USER_NOT_FOUND';
 
     /**
      * @type string
      */
-    protected const GENERAL_ERROR = 'GENERAL_ERROR';
+    private const GENERAL_ERROR = 'GENERAL_ERROR';
 
     /**
      * @var HttpObject
      */
     private $httpObject;
-
-    /**
-     * @var ErrorObject
-     */
-    private $errorObject;
 
     /**
      * @var ArrayResponseInterface
@@ -70,7 +66,6 @@ class CreateLocationController
      * CreateLocationController constructor.
      * @param ArrayResponseInterface $arrayResponse
      * @param HttpObject $httpObject
-     * @param ErrorObject $errorObject
      * @param JsonApiResponseInterface $jsonApiResponse
      * @param DbUsersRepositoryInterface $dbUserRepository
      * @param JsonApiErrorsFormatter $jsonApiErrorsFormatter
@@ -78,14 +73,12 @@ class CreateLocationController
     public function __construct(
         ArrayResponseInterface $arrayResponse,
         HttpObject $httpObject,
-        ErrorObject $errorObject,
         JsonApiResponseInterface $jsonApiResponse,
         DbUsersRepositoryInterface $dbUserRepository,
         JsonApiErrorsFormatter $jsonApiErrorsFormatter
     ) {
         $this->arrayResponse = $arrayResponse;
         $this->httpObject = $httpObject;
-        $this->errorObject = $errorObject;
         $this->jsonApiResponse = $jsonApiResponse;
         $this->dbUserRepository = $dbUserRepository;
         $this->jsonErrorFormat = $jsonApiErrorsFormatter;

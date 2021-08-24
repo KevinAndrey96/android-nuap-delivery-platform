@@ -96,13 +96,14 @@ class PaymentGatewayController extends Controller
         $orders = explode('-', $request->input('orders'));
 
         foreach ($orders as $item) {
-            if ($item != null){
-                $order = $this->dbOrderRepository->findByID($item);
+            if ($item !== null){
+                $order = $this->dbOrderRepository->findByID((int) $item);
                 $order->reference = $reference;
                 $order->save();
             }
+            return view('admin.payments.payment-response');
         }
 
-        return view('admin.payments.payment-response', []);
+        return view('admin.payments.payment-response');
     }
 }

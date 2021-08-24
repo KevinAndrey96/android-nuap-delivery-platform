@@ -14,7 +14,7 @@
 use Illuminate\Support\Facades\Route;
 
 ### Home ###
-/* Comming soon */
+/* Coming soon */
 Route::get('/', function (){
     return view('admin.home.index');
 });
@@ -32,7 +32,7 @@ Route::get('/admin/login-user', function (){
 Route::post('/admin/pre-register', 'Admin\AdminUsersController@preRegister');
 
 /* Payment Response */
-Route::post('/payment-response', 'Admin\PaymentGatewayController@response');
+Route::get('/payment-response', 'Admin\PaymentGatewayController@response');
 
 /* Payment gateway */
 Route::get('/payment-gateway', 'Admin\PaymentGatewayController@index');
