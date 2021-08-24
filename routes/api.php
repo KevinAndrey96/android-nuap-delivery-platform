@@ -107,7 +107,7 @@ Route::group(['prefix' => 'users'], function () {
         'uses' => 'Api\GetOrdersByUserController'
     ]);
 
-    Route::get('/orders/{order}/products', [
+    Route::middleware([ValidateJWT::class])->get('/orders/{order}/products', [
         'as' => 'api-users-orders-products',
         'uses' => 'Api\GerProductsByOrderController'
     ]);
