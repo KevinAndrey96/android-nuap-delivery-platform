@@ -27,28 +27,15 @@
                             <div id="cont-message" style="width: auto; height: 300px; overflow-y: scroll;">
                                 <div class="card-block">
                                     @foreach ($products as $product)
-                                        <div class="">
-                                            <img src="{{ URL::asset($product->image) }}" alt="nuap" class="img-responsive center-block align-content-center" width="50%" style="margin-left: 25%">
-                                        </div>
                                         <div class="row">
-                                            <label for="name" class="col-form-label text-md-right" :class="'col-md-3'"><b>Nombre:</b></label>
                                             <div :class="'col-md-3 col-md-3'">
-                                                <label for="name" class="col-form-label text-md-right">{{ $product->name }}</label>
+                                                <img src="{{ URL::asset($product->image) }}" alt="nuap" class="img-responsive center-block align-content-center" width="80%" style="margin-left: 25%">
                                             </div>
-                                            <label for="brand" class="col-form-label text-md-right" :class="'col-md-3'"><b>Marca:</b></label>
-                                            <div :class="'col-md-3 col-md-3'">
-                                                <label for="brand" class="col-form-label text-md-right">{{ $product->brand }}</label>
-                                            </div>
-
-                                        </div>
-                                        <div class="row">
-                                            <label for="quantity" class="col-form-label text-md-right" :class="'col-md-3'"><b>Cantidad:</b></label>
-                                            <div :class="'col-md-3 col-md-3'">
-                                                <label for="quantity" class="col-form-label text-md-right">{{ $product->quantity }} unidades</label>
-                                            </div>
-                                            <label for="price" class="col-form-label text-md-right" :class="'col-md-3'"><b>Precio:</b></label>
-                                            <div :class="'col-md-3 col-md-3'">
-                                                <label for="price" class="col-form-label text-md-right">{{ $product->price }}</label>
+                                            <div :class="'col-md-9 col-md-9'">
+                                                <label style="font-size: 10pt" for="name" class="col-form-label text-md-left">{{ $product->name }}</label><br>
+                                                <label style="font-size: 10pt" for="brand" class="col-form-label text-md-left">{{ $product->brand }}</label>
+                                                <label style="font-size: 10pt" for="quantity" class="col-form-label text-md-left">{{ $product->quantity }} unidades</label>
+                                                <label style="font-size: 10pt" for="price" class="col-form-label text-md-left">x {{ $product->price }} c/u</label>
                                             </div>
                                         </div>
                                         <hr>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Payment\IndexPayment;
+use App\Models\Balance;
 use App\Models\BankAccount;
 use App\Models\Config;
 use App\Models\Payment;
@@ -352,8 +353,13 @@ class PaymentController extends Controller
 
             $balance = $this->dbBalanceRepository->findByUserID($user->id);
             $account = $this->dbBankAccountRepository->findByUserID($user->id);
-            $balance->requested_value = '$ ' . $this->formatCurrency($balance->requested_value);
 
+            if (! is_null($balance)) {
+                $balance->requested_value = '$ ' . $this->formatCurrency($balance->requested_value);
+            } else {
+                $balance = new Balance();
+                $balance->requested_value = '$ 0';
+            }
             foreach ($data as $item) {
                 $item->value = '$ ' . $this->formatCurrency($item->value);
             }
@@ -487,6 +493,7 @@ class PaymentController extends Controller
      */
     public function changeStatusAccount(Request $request)
     {
+        dd('test');
         $userAdmin = Session::get('user');
 
         if (isset($userAdmin) && $userAdmin->role === User::ADMIN_ROLE) {
