@@ -78,7 +78,7 @@ class PaymentGatewayController extends Controller
             'description' => $description,
             'currency' => 'cop',
             'country' => 'co',
-            'test' => 'true',
+            'test' => 'false',
             'external' => 'true',
             'response' => 'https://thenuap.com/payment-response?orders='.$ordersIDs,
             'confirmation' => 'https://thenuap.com/confirm-payment',

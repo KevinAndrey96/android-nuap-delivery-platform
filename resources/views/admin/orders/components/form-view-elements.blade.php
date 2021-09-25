@@ -1,6 +1,7 @@
 <div class="card-header">
     <i class="fa fa-user"></i> {{ $order['client_type'] }}
 </div>
+
 <div class="form-group row align-items-center">
     <label for="email" class="col-form-label text-md-right" :class="'col-md-3'"><b>Correo Electrónico:</b></label>
     <div :class="'col-md-3 col-md-3'">
@@ -36,8 +37,9 @@
 @endif
 
 <div class="card-header">
-    <i class="fa fa-pencil"></i> Pedido
+    <i class="fa fa-pencil"></i> Pedido #{{ $order['id'] }}
 </div>
+
 <div class="form-group row align-items-center">
     <label for="total_products" class="col-form-label text-md-right" :class="'col-md-3'"><b>Número de productos:</b></label>
     <div :class="'col-md-3 col-md-3'">
@@ -102,3 +104,12 @@
         @endif
     </div>
 </div>
+
+<br>
+<div class="form-group row align-items-center">
+    <label for="status" class="col-form-label text-md-right" :class="'col-md-6'"><b>Fecha de Creación:</b></label>
+    <div :class="'col-md-6'">
+        <label for="total" class="col-form-label text-md-right"><b>{{ $order['created_at'] }}</b></label>
+    </div>
+</div>
+
