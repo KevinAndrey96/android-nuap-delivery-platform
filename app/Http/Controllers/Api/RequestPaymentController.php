@@ -160,6 +160,17 @@ class RequestPaymentController
 
                 return $this->jsonApiResponse->respondError($this->jsonErrorFormat, Response::HTTP_BAD_REQUEST);
             }
+            
+            if (! $account->status) {
+                $error = new ErrorObject();
+                $error->setCode(self::BANK_ACCOUNT_NOT_FOUND)
+                    ->setTitle(self::ERROR_TITLE)
+                    ->setDetail('Tu cuenta no se encuentra activa, por favor comunicate con un administrador.')
+                    ->setStatus((string) Response::HTTP_BAD_REQUEST);
+                $this->jsonErrorFormat->add($error);
+
+                return $this->jsonApiResponse->respondError($this->jsonErrorFormat, Response::HTTP_BAD_REQUEST);
+            }
 
             $balance = $this->dbBalanceRepository->findByUserID($user->id);
             if (is_null($balance)) {

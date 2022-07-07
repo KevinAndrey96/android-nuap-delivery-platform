@@ -12,10 +12,12 @@ use App\Models\Distributor;
 use App\Models\User;
 use App\Repositories\Contracts\DbProductRepositoryInterface;
 use App\Repositories\Contracts\DbUsersRepositoryInterface;
+use App\Repositories\Contracts\DbCommerceRepositoryInterface;
+use App\Repositories\Contracts\DbDistributorRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use Exception;
+use Throwable;
 
 /**
  * Class CategoryController
@@ -32,6 +34,11 @@ class CategoryController
      * @type string
      */
     protected const CATEGORIES_NOT_FOUND = 'CATEGORIES_NOT_FOUND';
+    
+    /**
+     * @type string
+     */
+    protected const ADDRESS_NOT_FOUND = 'ADDRESS_NOT_FOUND';
 
     /**
      * @type string
@@ -72,6 +79,16 @@ class CategoryController
      * @var DbProductRepositoryInterface
      */
     private $dbProductRepository;
+    
+    /**
+     * @var DbDistributorRepositoryInterface
+     */
+    private $dbDistributorRepository;
+
+    /**
+     * @var DbCommerceRepositoryInterface
+     */
+    private $dbCommerceRepository;
 
     /**
      * @var JsonApiErrorsFormatter
@@ -87,6 +104,8 @@ class CategoryController
      * @param DbUsersRepositoryInterface $dbUserRepository
      * @param DbProductRepositoryInterface $dbProductRepository
      * @param JsonApiErrorsFormatter $jsonApiErrorsFormatter
+     * @param DbDistributorRepositoryInterface $dbDistributorRepository
+     * @param DbCommerceRepositoryInterface $dbCommerceRepository
      */
     public function __construct(
         ArrayResponseInterface $arrayResponse,
@@ -95,7 +114,9 @@ class CategoryController
         JsonApiResponseInterface $jsonApiResponse,
         DbUsersRepositoryInterface $dbUserRepository,
         DbProductRepositoryInterface $dbProductRepository,
-        JsonApiErrorsFormatter $jsonApiErrorsFormatter
+        JsonApiErrorsFormatter $jsonApiErrorsFormatter,
+        DbDistributorRepositoryInterface $dbDistributorRepository,
+        DbCommerceRepositoryInterface $dbCommerceRepository
     ) {
         $this->arrayResponse = $arrayResponse;
         $this->httpObject = $httpObject;
@@ -104,6 +125,8 @@ class CategoryController
         $this->dbUserRepository = $dbUserRepository;
         $this->dbProductRepository = $dbProductRepository;
         $this->jsonErrorFormat = $jsonApiErrorsFormatter;
+        $this->dbCommerceRepository = $dbCommerceRepository;
+        $this->dbDistributorRepository = $dbDistributorRepository;
     }
 
     /**
@@ -125,12 +148,81 @@ class CategoryController
 
                 return $this->jsonApiResponse->respondError($this->jsonErrorFormat, Response::HTTP_BAD_REQUEST);
             }
+            
+            
+            if (! isset($request['address'])) {
+                $error = new ErrorObject();
+                $error->setCode(self::CATEGORIES_NOT_FOUND)
+                    ->setTitle(self::ERROR_TITLE)
+                    ->setDetail('No se encontraron categorias.')
+                    ->setStatus((string) Response::HTTP_BAD_REQUEST);
+                $this->jsonErrorFormat->add($error);
 
-            if ($user->role === User::COMMERCE_ROLE) {
-                $categories = $this->dbProductRepository->getEnabledCategories(User::DISTRIBUTOR_ROLE);
-            } else {
-                $categories = $this->dbProductRepository->getEnabledCategories(User::COMMERCE_ROLE);
+                return $this->jsonApiResponse->respondError($this->jsonErrorFormat, Response::HTTP_BAD_REQUEST);
             }
+            
+
+            $address = $this->dbUserRepository->findByUserLocationID($request['address']);
+
+            if (is_null($address)) {
+                $error = new ErrorObject();
+                $error->setCode(self::ADDRESS_NOT_FOUND)
+                    ->setTitle(self::ERROR_TITLE)
+                    ->setDetail('No se encontr¨® la direcci¨®n enviada.')
+                    ->setStatus((string) Response::HTTP_BAD_REQUEST);
+                $this->jsonErrorFormat->add($error);
+
+                return $this->jsonApiResponse->respondError($this->jsonErrorFormat, Response::HTTP_BAD_REQUEST);
+            }
+            
+            if ($user->role === User::COMMERCE_ROLE) {
+                $stores = $this->dbDistributorRepository->findValidDistributorsToAddProducts();
+            } else {
+                $stores = $this->dbCommerceRepository->findValidCommercesToAddProducts();
+            }
+
+            $storeIDS = [];
+            foreach ($stores as $store) {
+                $locations = $this->dbUserRepository->getLocationsByUser($store->user_id);
+                
+                $addStore = true;
+
+                if (count($locations) === 0) {
+                    $addStore = false;
+                }
+
+                foreach ($locations as $location) {
+                    $validate = $this->validateDistance(
+                        $store->distance,
+                        $location->latitude,
+                        $location->longitude,
+                        $address->latitude,
+                        $address->longitude
+                    );
+
+                    if (! $validate){
+                        $addStore = false;
+                    } else {
+                        break;
+                    }
+                }
+                if ($addStore) {
+                    array_push($storeIDS, $store->user_id);
+                }
+            }
+
+            $categories = $this->dbProductRepository->getEnabledCategories($storeIDS);
+            
+            $categoryIDS = [];
+            foreach ($categories as $category) {
+                if ($category->parent_id === 0) {
+                    array_push($categoryIDS, $category->id);
+                } else {
+                    array_push($categoryIDS, $category->parent_id);
+                }
+            }
+            
+            $categories = $this->dbProductRepository->getCategoriesByID(array_unique($categoryIDS));
 
             if (! count($categories)) {
                 $error = new ErrorObject();
@@ -150,7 +242,7 @@ class CategoryController
                 new CategoriesTransformer(),
                 'data'
             );
-        } catch (Exception $exception) {
+        } catch (Throwable $exception) {
             $error = new ErrorObject();
             $error->setCode(self::GENERAL_ERROR)
                 ->setTitle(self::ERROR_TITLE)
@@ -159,6 +251,41 @@ class CategoryController
             $this->jsonErrorFormat->add($error);
 
             return $this->jsonApiResponse->respondError($this->jsonErrorFormat, Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    /**
+     * @param $distance
+     * @param $latStore
+     * @param $longStore
+     * @param $latClient
+     * @param $longClient
+     * @return bool
+     */
+    private function validateDistance($distance, $latStore, $longStore, $latClient, $longClient): bool
+    {
+        $latStore = number_format((float) $latStore, 6);
+        $longStore = number_format((float) $longStore, 6);
+        $latClient = number_format((float) $latClient, 6);
+        $longClient = number_format((float) $longClient, 6);
+        
+        //Distancia en kilometros en 1 grado distancia.
+        $km = 111.302;
+        //1 Grado = 0.01745329 Radianes
+        $degtorad = 0.01745329;
+        //1 Radian = 57.29577951 Grados
+        $radtodeg = 57.29577951;
+        //La formula que calcula la distancia en grados en una esfera, llamada formula de Harvestine.
+        $dlong = ($longStore - $longClient);
+        $dvalue = (sin($latStore * $degtorad) * sin($latClient * $degtorad)) + (cos($latStore * $degtorad)
+                * cos($latClient * $degtorad) * cos($dlong * $degtorad));
+        $dd = acos($dvalue) * $radtodeg;
+        $distancia = round(($dd * $km), 2);
+        //dd($lat_vehi.",".$long_vehi." - ".$distancia." - ".$radio."|".$lat_geo.",".$long_geo);
+        if ($distancia <= $distance) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

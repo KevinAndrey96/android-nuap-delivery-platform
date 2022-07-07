@@ -14,7 +14,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-use Exception;
+use Throwable;
 
 /**
  * Class CreateLocationController
@@ -125,8 +125,8 @@ class CreateLocationController
             $data['location'] = $request->input('location');
             $data['neighborhood'] = $request->input('neighborhood');
             $data['address'] = $request->input('address');
-            $data['latitude'] = $request->input('latitude');
-            $data['longitude'] = $request->input('longitude');
+            $data['latitude'] = str_replace(",",".",$request->input('latitude'));
+            $data['longitude'] = str_replace(",",".",$request->input('longitude'));
 
             $location = UserLocation::create($data);
 
@@ -137,7 +137,7 @@ class CreateLocationController
                 new LocationTransformer(),
                 'data'
             );
-        } catch (Exception $exception) {
+        } catch (Throwable $exception) {
             $error = new ErrorObject();
             $error->setCode(self::GENERAL_ERROR)
                 ->setTitle(self::ERROR_TITLE)

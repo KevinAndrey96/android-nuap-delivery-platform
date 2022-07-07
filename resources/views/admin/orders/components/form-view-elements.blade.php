@@ -1,4 +1,19 @@
 <div class="card-header">
+    <i class="fa fa-shopping-bag"></i> Vendedor
+</div>
+
+<div class="form-group row align-items-center">
+    <label for="business_name" class="col-form-label text-md-right" :class="'col-md-3'"><b>Razón Social:</b></label>
+    <div :class="'col-md-3 col-md-3'">
+        <label for="business_name" class="col-form-label text-md-right">{{ $seller['business_name'] }}</label>
+    </div>
+    <label for="nit" class="col-form-label text-md-right" :class="'col-md-3'"><b>Nit:</b></label>
+    <div :class="'col-md-3 col-md-3'">
+        <label for="nit" class="col-form-label text-md-right">{{ $seller['nit'] }}</label>
+    </div>
+</div>
+
+<div class="card-header">
     <i class="fa fa-user"></i> {{ $order['client_type'] }}
 </div>
 
@@ -97,7 +112,7 @@
     </div>
     <label style="color: #c11e1e" for="status" class="col-form-label text-md-right" :class="'col-md-3'"><b>Fecha de Entrega:</b></label>
     <div :class="'col-md-3 col-md-3'">
-        @if($order['delivery_date'] != null && $status != 'Entregado')
+        @if($order['delivery_date'] != null)
             <label style="color: #C11E1E" for="total" class="col-form-label text-md-right"><b>{{ $order['delivery_date'] }}</b></label>
         @else
             <label style="color: #c11e1e" for="total" class="col-form-label text-md-right"><b>N/A</b></label>

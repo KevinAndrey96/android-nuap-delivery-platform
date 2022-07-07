@@ -25,6 +25,14 @@
                             <i class="fa" :class="submiting ? 'fa-spinner' : 'fa-download'"></i>
                             &nbsp; Guardar
                         </button>
+                        <div class="pull-right">
+                            @if($account['status'] === 1)
+                            <button disabled style="color: white" class="btn btn-success"><i></i>&nbspAprobada</button>
+                            @endif
+                            @if($account['status'] === 0)
+                                <button disabled style="color: white" class="btn btn-danger"><i></i>&nbspPendiente</button>
+                            @endif    
+                        </div>
                     </div>
                 </form>
             </form>

@@ -13,7 +13,7 @@ use App\Repositories\Contracts\DbUsersRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use Exception;
+use Throwable;
 
 /**
  * Class StoreController
@@ -192,7 +192,8 @@ class StoreController
                 new SellerTransformer(),
                 'data'
             );
-        } catch (Exception $exception) {
+        } catch (Throwable $exception) {
+            dd($exception);
             $error = new ErrorObject();
             $error->setCode(self::GENERAL_ERROR)
                 ->setTitle(self::ERROR_TITLE)
@@ -214,6 +215,11 @@ class StoreController
      */
     private function validateDistance($distance, $latStore, $longStore, $latClient, $longClient): bool
     {
+        $latStore = number_format((float) $latStore, 6);
+        $longStore = number_format((float) $longStore, 6);
+        $latClient = number_format((float) $latClient, 6);
+        $longClient = number_format((float) $longClient, 6);
+        
         //Distancia en kilometros en 1 grado distancia.
         $km = 111.302;
         //1 Grado = 0.01745329 Radianes
@@ -222,6 +228,7 @@ class StoreController
         $radtodeg = 57.29577951;
         //La formula que calcula la distancia en grados en una esfera, llamada formula de Harvestine.
         $dlong = ($longStore - $longClient);
+       
         $dvalue = (sin($latStore * $degtorad) * sin($latClient * $degtorad)) + (cos($latStore * $degtorad)
                 * cos($latClient * $degtorad) * cos($dlong * $degtorad));
         $dd = acos($dvalue) * $radtodeg;

@@ -14,7 +14,7 @@ interface DbClientRepositoryInterface
      * @param int $userID
      * @return Client|null|Collection
      */
-    public function findByUserID(int $userID): Client;
+    public function findByUserID(int $userID): ?Client;
 
     /**
      * @param int $clientID

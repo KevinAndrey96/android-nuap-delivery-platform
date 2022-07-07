@@ -118180,6 +118180,7 @@ Vue.component('admin-user-form', {
             name:  '' ,
             last_name:  '' ,
             password:  '' ,
+            confirm_password:  '' ,
             identity_number:  '',
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
         }
@@ -118875,6 +118876,7 @@ Vue.component('profile-edit-profile-form', {
         last_name: '',
         email: '',
         password: '',
+        confirm_password: '',
         activated: false,
         forbidden: false,
         language: ''

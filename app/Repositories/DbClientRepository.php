@@ -15,7 +15,7 @@ class DbClientRepository implements DbClientRepositoryInterface
      * @param int $userID
      * @return Client
      */
-    public function findByUserID(int $userID): Client
+    public function findByUserID(int $userID): ?Client
     {
         return Client::where('user_id', $userID)
             ->first();

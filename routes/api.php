@@ -116,6 +116,11 @@ Route::group(['prefix' => 'users'], function () {
         'as' => 'api-users-seller',
         'uses' => 'Api\SellerInfoController'
     ]);
+    
+    Route::middleware([ValidateJWT::class])->get('/order/{order}/delivery-date', [
+        'as' => 'api-users-order-delivery-date',
+        'uses' => 'Api\DeliveryDateController'
+    ]);
 
     Route::middleware([ValidateJWT::class])->post('/rating', [
         'as' => 'api-rating',

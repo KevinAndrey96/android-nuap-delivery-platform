@@ -190,8 +190,6 @@ class CalculateDeliveryAmountController
                             } else {
                                 $total += ($product['quantity'] * $data->sale_price);
                             }
-                            $data->stock -= $product['quantity'];
-                            $data->save();
                         } else {
                             $error = new ErrorObject();
                             $error->setCode(self::PRODUCT_NOT_AVAILABLE)

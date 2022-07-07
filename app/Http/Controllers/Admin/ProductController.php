@@ -381,12 +381,19 @@ class ProductController extends Controller
                 $image = $urlImage;
             }
 
+            $currentStatus = $this->dbProductRepository->findByID($request['product_id'])->status;
             if ($adminUser->role === User::DISTRIBUTOR_ROLE){
                 $status = Product::STATUS_INACTIVE;
             } else {
-                $status = $this->dbProductRepository->findByID($request['product_id'])->status;
+                $status = $currentStatus;
             }
-
+            
+            $currentStock = $this->dbProductRepository->findByID($request['product_id'])->stock;
+            
+            if ($adminUser->role === User::DISTRIBUTOR_ROLE && $currentStock != (int) $request['stock'] && $currentStatus == Product::STATUS_ACTIVE) {
+                $status = Product::STATUS_ACTIVE;  
+            }
+            
             $this->dbProductRepository->update(
                 $request['product_id'],
                 $request['category_id'],
@@ -402,6 +409,8 @@ class ProductController extends Controller
                 $request['purchase_price'],
                 $request['sale_price'],
                 $request['special_price'],
+                $request['is_featured'],
+                $request['has_special_price'],
                 $status,
                 $image
             );
@@ -767,6 +776,6 @@ class ProductController extends Controller
     public function formatCurrency($floatcurr, $curr = "COP"): string
     {
         $currencies['COP'] = array(0,',','.');
-        return number_format($floatcurr, $currencies[$curr][0], $currencies[$curr][1], $currencies[$curr][2]);
+        return ''.number_format($floatcurr, $currencies[$curr][0], $currencies[$curr][1], $currencies[$curr][2]);
     }
 }

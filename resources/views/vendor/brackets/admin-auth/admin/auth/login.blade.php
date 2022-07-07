@@ -2,6 +2,7 @@
 @extends('brackets/admin-ui::admin.layout.master')
 
 <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Login</title>
     <link rel="icon" href="{{URL::asset('images/nuap.png')}}"/>
@@ -29,7 +30,7 @@
                                 <div style="padding-top: 5px; padding-bottom: 2px" class="auth-body">
                                     @include('brackets/admin-auth::admin.auth.includes.messages')
                                     <div class="form-group" :class="{'has-danger': errors.has('email'), 'has-success': this.fields.email && this.fields.email.valid }">
-                                        <label for="email">Correo electrónico o celular</label>
+                                        <label for="email">Correo electr&oacutenico o celular</label>
                                         <div class="input-group input-group--custom">
                                             <div class="input-group-addon"><i class="input-icon input-icon--mail"></i></div>
                                             <input type="text" v-model="form.email" v-validate="'required'" class="form-control" :class="{'form-control-danger': errors.has('email'), 'form-control-success': this.fields.email && this.fields.email.valid}" id="email" name="email" placeholder="Correo electrónico">
@@ -38,7 +39,7 @@
                                     </div>
 
                                     <div class="form-group" :class="{'has-danger': errors.has('password'), 'has-success': this.fields.password && this.fields.password.valid }">
-                                        <label for="password">Contraseña</label>
+                                        <label for="password">Contrase&ntildea</label>
                                         <div class="input-group input-group--custom">
                                             <div class="input-group-addon"><i class="input-icon input-icon--lock"></i></div>
                                             <input type="password" v-model="form.password" class="form-control" :class="{'form-control-danger': errors.has('password'), 'form-control-success': this.fields.password && this.fields.password.valid}" id="password" name="password" placeholder="Contraseña">

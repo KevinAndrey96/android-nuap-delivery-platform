@@ -493,7 +493,6 @@ class PaymentController extends Controller
      */
     public function changeStatusAccount(Request $request)
     {
-        dd('test');
         $userAdmin = Session::get('user');
 
         if (isset($userAdmin) && $userAdmin->role === User::ADMIN_ROLE) {

@@ -123,15 +123,17 @@ class LoginController
                 $type = User::USER_ROLE;
             }
 
+            $email = trim($request->input('email'));
+
             $user = $this->dbUserRepository->clientOrCommerceByEmailAndPassword(
-                $request->input('email'),
+                strtolower($email),
                 $password,
                 $type
             )->first();
 
             if (is_null($user)) {
                 $user = $this->dbUserRepository->clientOrCommerceByPhoneAndPassword(
-                    $request->input('email'),
+                    strtolower($email),
                     $password,
                     $type
                 )->first();
@@ -141,7 +143,7 @@ class LoginController
                 $error = new ErrorObject();
                 $error->setCode(self::USER_NOT_FOUND)
                     ->setTitle(self::ERROR_TITLE)
-                    ->setDetail('Verifique su correo electrónico/celular y contraseña.')
+                    ->setDetail('No encontramos tu usuario, verifica los datos ingresados.')
                     ->setStatus((string) Response::HTTP_BAD_REQUEST);
                 $this->jsonErrorFormat->add($error);
 
@@ -175,7 +177,7 @@ class LoginController
 
             return $this->arrayResponse->responseWithItem(
                 $this->httpObject,
-                new LoginTransformer(new DbBalanceRepository()),
+                new LoginTransformer(new DbBalanceRepository()),        
                 'data'
             );
         } catch (Throwable $exception) {

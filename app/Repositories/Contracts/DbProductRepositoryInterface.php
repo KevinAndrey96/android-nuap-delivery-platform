@@ -77,6 +77,8 @@ interface DbProductRepositoryInterface
         float $purchasePrice,
         float $salePrice,
         float $specialPrice,
+        bool $is_featured,
+        bool $has_special_price,
         bool $status,
         string $image = null
     ): Product;
@@ -89,10 +91,16 @@ interface DbProductRepositoryInterface
     public function findByCategoryAndUserID(int $categoryID, int $userID): Collection;
 
     /**
-     * @param string $userType
+     * @param string $usersID
      * @return Collection
      */
-    public function getEnabledCategories(string $userType): Collection;
+    public function getEnabledCategories(array $usersID): Collection;
+    
+   /**
+     * @param string $categoriesID
+     * @return Collection
+     */
+    public function getCategoriesByID(array $categoriesID): Collection;
 
     /**
      * @param int $categoryID
