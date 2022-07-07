@@ -106,6 +106,8 @@ class DbProductRepository implements DbProductRepositoryInterface
         float $purchasePrice,
         float $salePrice,
         float $specialPrice,
+        bool $is_featured,
+        bool $has_special_price,
         bool $status,
         string $image = null
     ): Product {
@@ -123,6 +125,8 @@ class DbProductRepository implements DbProductRepositoryInterface
         $product->purchase_price = $purchasePrice;
         $product->sale_price = $salePrice;
         $product->special_price = $specialPrice;
+        $product->is_featured = $is_featured;
+        $product->has_special_price = $has_special_price;
         $product->status = $status;
 
         if (!is_null($image))
@@ -150,17 +154,30 @@ class DbProductRepository implements DbProductRepositoryInterface
      * @param string $userType
      * @return Collection
      */
-    public function getEnabledCategories(string $userType): Collection
+    public function getEnabledCategories(array $usersID): Collection
     {
         return Category::select('categories.*')
             ->join('products', 'products.category_id', '=', 'categories.id')
             ->join('users', 'products.user_id', '=', 'users.id')
-            ->where('users.role', $userType)
             ->where('users.status', User::STATUS_ACTIVE)
             ->where('products.status', Product::STATUS_ACTIVE)
             ->where('products.stock', '>', 0)
-            ->where('categories.parent_id', 0)
+            //->where('categories.parent_id', 0)
+            ->whereIn('products.user_id', $usersID)
             ->groupBy('categories.id')
+            ->inRandomOrder()
+            ->get();
+    }
+    
+    /**
+     * @param string $userType
+     * @return Collection
+     */
+    public function getCategoriesByID(array $categoriesID): Collection
+    {
+        return Category::select('categories.*')
+            ->whereIn('categories.id', $categoriesID)
+            ->where('categories.parent_id', 0)
             ->inRandomOrder()
             ->get();
     }

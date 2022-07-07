@@ -123,7 +123,7 @@ class GenerateOTPController
                 $error = new ErrorObject();
                 $error->setCode(self::USER_NOT_FOUND)
                     ->setTitle(self::ERROR_TITLE)
-                    ->setDetail('El código es incorrecto por favor vuelve a intentarlo..')
+                    ->setDetail('Usuario no encontrado.')
                     ->setStatus((string) Response::HTTP_BAD_REQUEST);
                 $this->jsonErrorFormat->add($error);
 

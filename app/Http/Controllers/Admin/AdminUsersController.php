@@ -329,7 +329,7 @@ class AdminUsersController extends Controller
                 $account['account'] = $request['account'];
                 $account['account_type'] = isset($request['account_type']) ? $request['account_type'] : $account->account_type;
                 $account['bank'] = isset($request['bank']) ? $request['bank'] : $account->bank;
-                $account['status'] = BankAccount::ACCOUNT_INACTIVE;
+                $account['status'] = BankAccount::ACCOUNT_ACTIVE;
                 $documents = 'documents/'.$user->phone;
                 if (!is_dir($documents)) {
                     mkdir($documents, 0777, true);

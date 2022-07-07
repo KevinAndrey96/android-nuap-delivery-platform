@@ -23,6 +23,7 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
+use Throwable;
 
 /**
  * Class OrderController
@@ -100,7 +101,7 @@ class OrderController extends Controller
                     $query->select(
                         'orders.*'
                     )->where('orders.user_id', Session::get('user')->id)
-                    ->orderBy('orders.status', 'asc')
+                    //->orderBy('orders.status', 'asc')
                     ->orderBy('id', 'desc');
                 })->processRequestAndGet(
                     $request,
@@ -157,6 +158,15 @@ class OrderController extends Controller
             if ($order->client_type === User::COMMERCE_ROLE) {
                 $client = $this->dbCommerceRepository->findByUserID($order->client_id);
             }
+            
+            $seller = null;
+            if ($order->user_type === User::DISTRIBUTOR_ROLE) {
+                $seller = $this->dbDistributorRepository->findByUserID($order->user_id);
+            }
+
+            if ($order->user_type === User::COMMERCE_ROLE) {
+                $seller = $this->dbCommerceRepository->findByUserID($order->user_id);
+            }
 
             $user = $this->dbUserRepository->findByID($order->client_id);
             $products = $this->dbOrderRepository->findProductsByOrderID($order->id);
@@ -181,6 +191,7 @@ class OrderController extends Controller
             return view('admin.orders.view', [
                 'order' => $order,
                 'client' => $client,
+                'seller' => $seller,
                 'user' => $user,
                 'products' => $products,
                 'activation' => $userAdmin->name,
@@ -279,6 +290,11 @@ class OrderController extends Controller
                     $balance->save();
                 }
             }
+            
+            $currentDate = date('Y-m-d H:i:s');
+            if ($currentDate > $order->delivery_date) {
+                $order->delivery_date = $currentDate;
+            }
 
             $order->save();
 
@@ -332,8 +348,9 @@ class OrderController extends Controller
                 ->modifyQuery(function($query) {
                     $query->select(
                         'orders.*'
-                    )->orderBy('orders.status', 'asc')
-                        ->orderBy('id', 'desc');
+                    )
+                    //->orderBy('orders.status', 'asc')
+                    ->orderBy('id', 'desc');
                 })->processRequestAndGet(
                     $request,
                     ['id', 'total_products', 'total_amount', 'delivery_amount', 'total_discount', 'total', 'status'],

@@ -19,6 +19,7 @@ class DbBankAccountRepository implements DbBankAccountRepositoryInterface
     public function findByUserID(int $userID)
     {
         return BankAccount::where('user_id', $userID)
+            //->where('status', BankAccount::ACCOUNT_ACTIVE)
             ->first();
     }
 

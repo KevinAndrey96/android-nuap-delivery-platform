@@ -33,6 +33,7 @@
             data-epayco-test="{{ $test }}"
             data-epayco-external="{{ $external }}"
             data-epayco-response="{{ $response }}"
+            data-epayco-acepted="{{ $acepted }}"
             data-epayco-confirmation="{{ $confirmation }}">
         </script>
     </form>

@@ -108,16 +108,16 @@ class CategoriesController
                 $error = new ErrorObject();
                 $error->setCode(self::USER_NOT_FOUND)
                     ->setTitle(self::ERROR_TITLE)
-                    ->setDetail('No se encontró el usuario.')
+                    ->setDetail('No se encontro el usuario.')
                     ->setStatus((string) Response::HTTP_BAD_REQUEST);
                 $this->jsonErrorFormat->add($error);
 
                 return $this->jsonApiResponse->respondError($this->jsonErrorFormat, Response::HTTP_BAD_REQUEST);
             }
 
-            $categories = Category::all();
+            $categories = Category::where('parent_id', $request['id'])->get();
 
-            if (!count($categories)) {
+            if (! count($categories)) {
                 $error = new ErrorObject();
                 $error->setCode(self::CATEGORIES_NOT_FOUND)
                     ->setTitle(self::ERROR_TITLE)

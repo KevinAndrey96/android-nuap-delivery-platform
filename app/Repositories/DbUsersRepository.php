@@ -97,6 +97,18 @@ class DbUsersRepository implements DbUsersRepositoryInterface
     }
 
     /**
+     * @param string $otp
+     * @param string $email
+     * @return User|null
+     */
+    public function findByOTPCodeAndEmail(string $otp, string $email): ? User
+    {
+        return User::where('otp', $otp)
+            ->where('email', $email)
+            ->first();
+    }
+
+    /**
      * @param string $phone
      * @param string $password
      * @return User|null
@@ -339,6 +351,7 @@ class DbUsersRepository implements DbUsersRepositoryInterface
     public function getLocationsByUser(int $userID): Collection
     {
         return UserLocation::where('user_id', $userID)
+            ->inRandomOrder()
             ->get();
     }
 

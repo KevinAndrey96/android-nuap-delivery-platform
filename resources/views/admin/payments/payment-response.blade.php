@@ -3,8 +3,8 @@
         <div class="center-block">
             <img src="{{URL::asset('images/Nuapcircle.png')}}" style="width:40%" class="img-responsive mx-auto d-block">
         </div>
-        <h2 style="color: white">GRACIAS POR COMPRAR EN NUAP</h2>
-        <h3 style="color: white">Tu pago está siendo procesado</h3>
+        <h2 style="color: white">GRACIAS POR USAR NUAP</h2>
+        <h3 style="color: white">Se ha finalizado el proceso, puedes consultar el estado de tu pedido en la sección Mis pedidos</h3>
     </div>
 </div>
 

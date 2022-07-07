@@ -216,7 +216,17 @@ class CreateProductCommerceController
                 );
             } else {
                 $product = $this->dbProductRepository->findByID($request->input('product_id'));
-                $product->status = Product::STATUS_INACTIVE;
+                
+                $currentStatus = $product->status;
+                $currentStock = $product->stock;
+                
+                if ($currentStock != $request->input('stock') && $currentStatus == Product::STATUS_ACTIVE) {
+                    $status = Product::STATUS_ACTIVE;  
+                } else {
+                    $status = Product::STATUS_INACTIVE;  
+                }
+                
+                $product->status = $status;
                 $product->position = 0;
                 $product->user_id =  $user->id;
                 $product->category_id = $request->input('category_id');
@@ -243,7 +253,7 @@ class CreateProductCommerceController
             }
 
             $this->httpObject->setBody([
-                'data' => null
+                'data' => $request['img']
             ]);
 
             return $this->arrayResponse->respond($this->httpObject);

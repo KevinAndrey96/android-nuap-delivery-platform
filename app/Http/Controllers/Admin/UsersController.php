@@ -26,6 +26,9 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
+use Throwable;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendEmail;
 
 /**
  * Class UsersController
@@ -109,6 +112,75 @@ class UsersController extends Controller
         }
 
         return [];
+    }
+    
+    /**
+     * @param Request $request
+     * @return Factory|Application|RedirectResponse|Redirector|View
+     */
+    public function recoverPassword(Request $request)
+    {
+        $user = $this->dbUserRepository->getUserByPhone($request['email']);
+        if (is_null($user)) {
+            $user = $this->dbUserRepository->getUserByEmail($request['email']);
+        }
+
+        if (is_null($user)) {
+            return view('admin.users.recover-password', [
+                'error' => 'No encontramos ningún usuario asociado a este número o correo electrónico, por favor intenta de nuevo.',
+            ]);
+        }
+        
+        $otp = $this->generateOTP($user);
+        $message = sprintf('%s %d', 'Tu código de confirmación para cambiar tu contraseña de NuAp es', $otp);
+
+        if (env('SMS_ENABLED') === true) {
+            $this->sendSMSService->sendMessage(
+                $message,
+                $user->phone,
+                ! is_null($user->country_code) ? $user->country_code : 57
+            );
+        }
+
+        Mail::to($user->email)->send(new SendEmail(
+                '',
+                $message,
+                'Hemos recibido tu solicitud de cambio de contraseña !'
+            )
+        );
+        
+        return view('admin.users.change-password', ['user' => $user->email]);
+    }
+    
+    /**
+     * @param Request $request
+     * @return Factory|Application|RedirectResponse|Redirector|View
+     */
+    public function changePassword(Request $request)
+    {
+        $user = $this->dbUserRepository->findByOTPCodeAndPhone($request['code'], $request['user']);
+        if (is_null($user)) {
+           $user = $this->dbUserRepository->findByOTPCodeAndEmail($request['code'], $request['user']);
+        }
+        
+        if (is_null($user)) {
+            return view('admin.users.change-password', [
+                'error' => 'El código es incorrecto por favor vuelve a intentarlo.',
+                'user' => $request['user']
+            ]);
+        }
+        
+        if ($request['password'] !== $request['confirm_password']) {
+            return view('admin.users.change-password', [
+                'error' => 'Las contraseñas que ingresaste no coinciden, por favor intenta de nuevo.',
+                'user' => $request['user']
+            ]);
+        }
+        
+        $password = md5($request['password']);
+        $this->dbUserRepository->updatePassword($user->id, $password);
+
+        return view('admin.users.change-password-success');
     }
 
     /**
@@ -221,11 +293,13 @@ class UsersController extends Controller
     public function loginUser(LoginUsers $request)
     {
         $password = md5($request['password']);
+        
+        $email = trim($request->input('email'));
 
-        $user = $this->dbUserRepository->findUserByEmailAndPassword($request['email'], $password);
+        $user = $this->dbUserRepository->findUserByEmailAndPassword(strtolower($email), $password);
 
         if (is_null($user)) {
-            $user = $this->dbUserRepository->findUserByPhoneAndPassword($request['email'], $password);
+            $user = $this->dbUserRepository->findUserByPhoneAndPassword(strtolower($email), $password);
             if (is_null($user)) {
                 return view('vendor.brackets.admin-auth.admin.auth.login', [
                     'error' => 'Credenciales inválidas, intenta de nuevo.',
@@ -546,7 +620,7 @@ class UsersController extends Controller
                 'urls' => $urls,
                 'user' => $user,
                 'activation' => $userAdmin->name,
-                'role' => $user->role,
+                'role' => $userAdmin->role,
             ]);
         }
 
@@ -703,5 +777,36 @@ class UsersController extends Controller
         $user->save();
 
         return $otp;
+    }
+    
+    /**
+     * @param CreateUserLocation $request
+     * @return array|Application|RedirectResponse|Redirector
+     */
+    public function createAddress(Request $request)
+    {
+        $this->validate($request, [
+            'user' => ['required', 'integer'],
+            'country' => ['required', 'string'],
+            'city' => ['required', 'string'],
+            'location' => ['required', 'string'],
+            'neighborhood' => ['required', 'string'],
+            'address' => ['required', 'string'],
+            'latitude' => ['required', 'string'],
+            'longitude' => ['required', 'string']
+        ]);
+
+        $address = new UserLocation();
+        $address->user_id = $request->user;
+        $address->country = $request->country;
+        $address->city = $request->city;
+        $address->location = $request->location;
+        $address->neighborhood = $request->neighborhood;
+        $address->address = $request->address;
+        $address->latitude = $request->latitude;
+        $address->longitude = $request->longitude;
+        $address->save();
+        
+        return view('admin.users.response-success');
     }
 }

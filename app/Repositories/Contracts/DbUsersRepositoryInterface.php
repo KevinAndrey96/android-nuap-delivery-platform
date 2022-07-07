@@ -43,7 +43,14 @@ interface DbUsersRepositoryInterface
      * @return User|null
      */
     public function findByOTPCodeAndPhone(string $otp, string $phone): ? User;
-
+    
+    /**
+     * @param string $otp
+     * @param string $email
+     * @return User|null
+     */
+    public function findByOTPCodeAndEmail(string $otp, string $email): ? User;
+    
     /**
      * @param int $userID
      * @param string $phone

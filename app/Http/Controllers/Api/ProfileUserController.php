@@ -12,7 +12,7 @@ use App\Repositories\Contracts\DbUsersRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use Exception;
+use Throwable;
 
 /**
  * Class ProfileUserController
@@ -127,7 +127,8 @@ class ProfileUserController
                 new ClientTransformer(),
                 'data'
             );
-        } catch (Exception $exception) {
+        } catch (Throwable $exception) {
+            dd($exception);
             $error = new ErrorObject();
             $error->setCode(self::GENERAL_ERROR)
                 ->setTitle(self::ERROR_TITLE)

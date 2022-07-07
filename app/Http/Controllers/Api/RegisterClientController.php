@@ -9,6 +9,7 @@ use App\Libraries\Responders\HttpObject;
 use App\Libraries\Responders\JsonApiErrorsFormatter;
 use App\Models\SessionLog;
 use App\Models\User;
+use App\Models\Client;
 use App\Repositories\Contracts\DbUsersRepositoryInterface;
 use App\Repositories\DbBalanceRepository;
 use Illuminate\Http\JsonResponse;
@@ -116,8 +117,10 @@ class RegisterClientController
 
             $password = md5($request->input('password'));
 
+            $email = trim($request->input('email'));
+
             $data['phone'] = $request->input('phone');
-            $data['email'] = $request->input('email');
+            $data['email'] = strtolower($email);
             $data['name'] = $request->input('name');
             $data['last_name'] = $request->input('last_name');
             $data['identity_number'] = $request->input('identity_number');
@@ -129,6 +132,9 @@ class RegisterClientController
             $data['api_token'] = Str::random(60);
 
             $user = User::create($data);
+            
+            $data['user_id'] = $user->id;
+            $client = Client::create($data);
 
             $logSession = new SessionLog();
             $logSession->user_id = $user->id;

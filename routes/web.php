@@ -24,6 +24,17 @@ Route::get('/privacy-policy', function (){
     return view('admin.home.privacy-policy');
 });
 
+/* Terms and conditions user */
+Route::get('/user/terms-and-conditions', function (){
+    return view('admin.home.user-terms-and-conditions');
+});
+
+/* Termins and conditions commerce */
+Route::get('/commerce/terms-and-conditions', function (){
+    return view('admin.home.commerce-terms-and-conditions');
+});
+
+/* Login */
 Route::get('/admin/login-user', function (){
     return view('vendor.brackets.admin-auth.admin.auth.login-user');
 });
@@ -34,10 +45,21 @@ Route::post('/admin/pre-register', 'Admin\AdminUsersController@preRegister');
 /* Payment Response */
 Route::get('/payment-response', 'Admin\PaymentGatewayController@response');
 
+/* Payment Response */
+Route::post('/payment-acepted', 'Admin\PaymentGatewayController@responseAcepted');
+
 /* Payment gateway */
 Route::get('/payment-gateway', 'Admin\PaymentGatewayController@index');
 
 ### Users ###
+/* Recover password */
+Route::get('/recover-password', function (){
+    return view('admin.users.recover-password');
+});
+/* Recover password send code*/
+Route::post('/send-code-recover-password', 'Admin\UsersController@recoverPassword');
+/* Change password */
+Route::post('/change-password', 'Admin\UsersController@changePassword');
 /* Validate session */
 Route::get('/admin/user-session', 'Admin\UsersController@validateSession');
 /* Login */
@@ -66,6 +88,12 @@ Route::post('/admin/users/store-documents', 'Admin\UsersController@storeDocument
 Route::delete('/admin/user-location/{user}', 'Admin\UsersController@deleteLocation')->name('admin/users/deleteLocation');
 /* View bank account */
 Route::get('/admin/users/{user}/view-account', 'Admin\PaymentController@viewAccount')->name('admin/users/view-account');
+/* View Address iOS */
+Route::get('/create-address', function (){
+    return view('admin.users.create-address');
+});
+/* Create Address iOS */
+Route::post('/admin/users/create-address', 'Admin\UsersController@createAddress');
 
 ### Admin ###
 /* View create */

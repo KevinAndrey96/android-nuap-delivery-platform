@@ -168,6 +168,7 @@ class FeaturedController
             }
 
             $storeIDS = [];
+
             foreach ($stores as $store) {
                 $locations = $this->dbUserRepository->getLocationsByUser($store->user_id);
                 $addStore = true;

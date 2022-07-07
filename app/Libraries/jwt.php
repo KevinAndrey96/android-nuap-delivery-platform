@@ -25,10 +25,13 @@ class jwt
             'alg' => 'HS256'
         ]);
 
+        $date = date("d-m-Y");
+        $date = date("d-m-Y",strtotime($date."+ 30 days"));
+
         // Create the token payload
         $payload = json_encode([
             'user_id' => $userID,
-            'exp' => 1593828222
+            'exp' => strtotime($date)
         ]);
 
         // Encode Header

@@ -22,8 +22,9 @@ class SellerTransformer extends TransformerAbstract
             'status' => $item['status'],
             'business_name' => $item['business_name'],
             'nit' => $item['nit'],
-            'commission' => '$ '.$item['commission'].'%',
+            'commission' => $item['commission'].'%',
             'url_logo' => $item['url_logo'],
+            'header' => $item['url_header'],
             'shipping_cost' => '$ '.$this->formatCurrency($item['shipping_cost']),
             'distance' => $item['distance'].'km'
         ];

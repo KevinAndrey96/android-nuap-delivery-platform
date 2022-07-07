@@ -47,7 +47,7 @@
                 </div>
             </form>
         </bulk-action-form>
-        @if($status != null)
+        @if($status != null && $role != 'Administrador')
             <form id="form-basic" method="post" enctype="multipart/form-data" action="{{ url('admin/order/change-status') }}">
                 <div style="padding-top: 0px" class="card-footer pull-right">
                     <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
@@ -59,7 +59,7 @@
                 </div>
             </form>
         @endif
-        @if($status != null && $status != 'Entregado')
+        @if($status != null && $role != 'Administrador')
             <form id="form-deliver" method="post" enctype="multipart/form-data" action="{{ url('admin/order/deliver-date') }}">
                 <div style="padding-top: 0px" class="card-footer pull-right">
                     <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />

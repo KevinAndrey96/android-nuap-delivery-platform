@@ -2,7 +2,9 @@
 namespace App\Http\Transformers;
 
 use App\Models\Commerce;
+use App\Models\User;
 use League\Fractal\TransformerAbstract;
+use App\Repositories\Contracts\DbBalanceRepositoryInterface;
 
 /**
  * Class CommerceTransformer
@@ -10,6 +12,21 @@ use League\Fractal\TransformerAbstract;
  */
 class CommerceTransformer extends TransformerAbstract
 {
+    /**
+     * @var DbBalanceRepositoryInterface
+     */
+    private $dbBalanceRepository;
+
+    /**
+     * LoginTransformer constructor.
+     * @param DbBalanceRepositoryInterface $dbBalanceRepository
+     */
+    public function __construct(
+        DbBalanceRepositoryInterface $dbBalanceRepository
+    ) {
+        $this->dbBalanceRepository = $dbBalanceRepository;
+    }
+    
     /**
      * @param Commerce $item
      * @return array
@@ -26,8 +43,27 @@ class CommerceTransformer extends TransformerAbstract
             'commission' => $item->commission.'%',
             'url_logo' => $item->url_logo,
             'shipping_cost' => $this->formatCurrency($item->shipping_cost),
-            'distance' => $item->distance.'km'
+            'distance' => $item->distance.'km',
+            'balance' => $this->getBalance($item)
         ];
+    }
+    
+    /**
+     * @param User $user
+     * @return string
+     */
+    private function getBalance(Commerce $user): string
+    {
+        if ($user->role === User::COMMERCE_ROLE) {
+            $balance = $this->dbBalanceRepository->findByUserID($user->user_id);
+            if (! is_null($balance)) {
+                $balance->requested_value = '$ '.$this->formatCurrency($balance->requested_value);
+                return $balance->requested_value;
+            }
+            return '$ 0';
+        }
+
+        return '';
     }
 
     /**
@@ -38,6 +74,6 @@ class CommerceTransformer extends TransformerAbstract
     public function formatCurrency($floatcurr, $curr = "COP"): string
     {
         $currencies['COP'] = array(0,',','.');
-        return '$ '.number_format($floatcurr, $currencies[$curr][0], $currencies[$curr][1], $currencies[$curr][2]);
+        return number_format($floatcurr, $currencies[$curr][0], $currencies[$curr][1], $currencies[$curr][2]);
     }
 }

@@ -194,6 +194,11 @@ class UpdateStatusController
                 }
             }
 
+            $currentDate = date('Y-m-d H:i:s');
+            if ($currentDate > $order->delivery_date) {
+                $order->delivery_date = $currentDate;
+            }
+
             $order->save();
 
             $this->httpObject->setBody([

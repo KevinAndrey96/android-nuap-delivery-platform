@@ -50,7 +50,7 @@ class PaymentsExport implements FromCollection, WithMapping, WithHeadings
             'Banco',
             'Certificado',
             'Valor',
-            'Fecha Petición',
+            'Fecha Peticion',
             'Fecha Pago',
             'Comprobante'
         ];
@@ -77,7 +77,7 @@ class PaymentsExport implements FromCollection, WithMapping, WithHeadings
             (string) $export->value,
             (string) $export->request_date,
             (string) $export->payment_date,
-            (string) $export->voucher
+            'https://thenuap.com/'.(string) $export->voucher
         ];
     }
 }

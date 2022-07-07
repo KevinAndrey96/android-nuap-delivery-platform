@@ -116,6 +116,7 @@ class DetailAccountController
             }
 
             $account = $this->dbBankAccountRepository->findByUserID($user->id);
+
             If (is_null($account)) {
                 $error = new ErrorObject();
                 $error->setCode(self::ACCOUNT_NOT_FOUND)

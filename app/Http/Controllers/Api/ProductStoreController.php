@@ -231,6 +231,11 @@ class ProductStoreController
      */
     private function validateDistance($distance, $latStore, $longStore, $latClient, $longClient): bool
     {
+        $latStore = number_format((float) $latStore, 6);
+        $longStore = number_format((float) $longStore, 6);
+        $latClient = number_format((float) $latClient, 6);
+        $longClient = number_format((float) $longClient, 6);
+        
         //Distancia en kilometros en 1 grado distancia.
         $km = 111.302;
         //1 Grado = 0.01745329 Radianes

@@ -19,6 +19,8 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Throwable;
+use App\Mail\SendEmail;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Class CreateOrderController
@@ -203,7 +205,13 @@ class CreateOrderController
                 $order = new Order();
                 $order->user_id = $store;
                 $order->user_type = $userType;
-                $order->status = Order::STATUS_INITIATED;
+                
+                if ($request['is_cash'] === true) {
+                    $order->status = Order::STATUS_ACCEPTED;
+                } else {
+                    $order->status = Order::STATUS_INITIATED;
+                }
+                
                 $order->client_id = $user->id;
                 $order->client_type = $user->role;
                 $order->total_products = $countProducts;
@@ -214,6 +222,15 @@ class CreateOrderController
                 $order->address_id = $address->id;
                 $order->is_cash = $request['is_cash'];
                 $order->save();
+                
+                $seller = $this->dbUserRepository->findByID($store);
+
+                Mail::to($seller->email)->send(new SendEmail(
+                        $dataStore->first()->business_name,
+                    'Te acaban de realizar una compra, por favor revisa el pedido',
+                        'Te han realizado una compra !'
+                    )
+                );
 
                 foreach ($request['products'] as $product) {
                     $data = Product::findOrFail($product['id']);
