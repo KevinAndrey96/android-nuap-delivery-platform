@@ -66,11 +66,11 @@
                                 <td >@{{ item.stock }}</td>
                                 <td >@{{ item.purchase_price }}</td>
                                 <td >@{{ item.sale_price }}</td>
-                                <td v-if="item.status === 1">
+                                <td v-if="item.status == 1">
                                     <div class="col text-center"><button disabled style="color: white" class="btn btn-sm btn-success"><i></i>&nbspAprobado</button></div>
 
                                 </td>
-                                <td v-if="item.status === 0">
+                                <td v-if="item.status == 0">
                                     <div class="col text-center"><button disabled style="color: white" class="btn btn-sm btn-danger"><i></i>&nbspNo Aprobado</button></div>
                                 </td>
                                 <td>

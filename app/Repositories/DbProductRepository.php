@@ -162,7 +162,7 @@ class DbProductRepository implements DbProductRepositoryInterface
             ->where('users.status', User::STATUS_ACTIVE)
             ->where('products.status', Product::STATUS_ACTIVE)
             ->where('products.stock', '>', 0)
-            //->where('categories.parent_id', 0)
+            ->where('categories.parent_id', 0)
             ->whereIn('products.user_id', $usersID)
             ->groupBy('categories.id')
             ->inRandomOrder()

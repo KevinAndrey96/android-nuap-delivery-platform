@@ -63,13 +63,13 @@
                                     <td >@{{ item.nit }}</td>
                                     <td >@{{ item.commission }}%</td>
                                     <td >@{{ item.name_legal_representative }}</td>
-                                    <td v-if="item.status === 1">
+                                    <td v-if="item.status == 1">
                                         <label class="switch switch-3d switch-success">
                                             <input type="checkbox" class="switch-input" v-model="collection[index].status" @change="toggleSwitch(item.resource_url+'/status', 'status', collection[index])">
                                             <span class="switch-slider"></span>
                                         </label>
                                     </td>
-                                    <td v-if="item.status === 0">
+                                    <td v-if="item.status == 0">
                                         <label class="switch switch-3d switch-danger">
                                             <input type="checkbox" class="switch-input" v-model="collection[index].status" @change="toggleSwitch(item.resource_url+'/status', 'status', collection[index])">
                                             <span class="switch-slider"></span>

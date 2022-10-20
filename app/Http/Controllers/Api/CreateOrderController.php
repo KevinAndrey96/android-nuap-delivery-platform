@@ -278,6 +278,8 @@ class CreateOrderController
             return $this->arrayResponse->respond($this->httpObject);
 
         } catch (Throwable $exception) {
+            dd($exception);
+            
             $error = new ErrorObject();
             $error->setCode(self::GENERAL_ERROR)
                 ->setTitle(self::ERROR_TITLE)

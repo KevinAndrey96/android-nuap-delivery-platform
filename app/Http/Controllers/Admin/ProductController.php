@@ -17,8 +17,11 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
 use App\Repositories\Contracts\DbCommerceRepositoryInterface;
+use App\Repositories\DbCommerceRepository;
 use App\Repositories\Contracts\DbDistributorRepositoryInterface;
+use App\Repositories\DbDistributorRepository;
 use App\Repositories\Contracts\DbProductRepositoryInterface;
+use App\Repositories\DbProductRepository;
 use Brackets\AdminListing\Facades\AdminListing;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\View\Factory;
@@ -30,6 +33,7 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Throwable;
 
 /**
  * Class ProductController
@@ -48,7 +52,7 @@ class ProductController extends Controller
     private $dbDistributorRepository;
 
     /**
-     * @var DbProductRepositoryInterface
+     * @var DbProductRepository
      */
     private $dbProductRepository;
 
@@ -68,14 +72,14 @@ class ProductController extends Controller
      * @param DbDistributorRepositoryInterface $dbDistributorRepository
      * @param DbProductRepositoryInterface $dbProductRepository
      */
-    public function __construct(
+    public function _construct(
         DbCommerceRepositoryInterface $dbCommerceRepository,
         DbDistributorRepositoryInterface $dbDistributorRepository,
         DbProductRepositoryInterface $dbProductRepository
     ) {
         $this->dbCommerceRepository = $dbCommerceRepository;
         $this->dbDistributorRepository = $dbDistributorRepository;
-        $this->dbProductRepository = $dbProductRepository;
+        $this->dbProductRepository = new DbProductRepository();;
     }
 
     /**
@@ -126,8 +130,10 @@ class ProductController extends Controller
     public function create()
     {
         $user = Session::get('user');
-        $commerces = $this->dbCommerceRepository->findValidCommercesToAddProducts();
-        $distributors = $this->dbDistributorRepository->findValidDistributorsToAddProducts();
+        $dbCommerceRepository = new DbCommerceRepository();
+        $commerces = $dbCommerceRepository->findValidCommercesToAddProducts();
+        $dbDistributorRepository = new DbDistributorRepository();
+        $distributors = $dbDistributorRepository->findValidDistributorsToAddProducts();
 
         if (isset($user) && $user->role == User::ADMIN_ROLE) {
             return view('admin.products.create', [
@@ -228,15 +234,21 @@ class ProductController extends Controller
                 }
 
                 $distributor = Distributor::where('user_id', $user->id)->first();
-                Mail::to($emails)->send(new SendEmail(
+                
+                try {
+                    Mail::to($emails)->send(new SendEmail(
                         '',
                         sprintf('%s ha creado un nuevo producto con el id %d, por favor revisalo lo antes
-                                posible para gestionar su aprobación. Click en el siguiente enlace para ver el producto 
+                                posible para gestionar su aprobacion. Click en el siguiente enlace para ver el producto 
                                 https://thenuap.com/admin/product-list',
                             $distributor->business_name, $product->id),
-                        '¡Han creado un nuevo producto!.'
+                        'Han creado un nuevo producto!.'
                     )
                 );
+                } catch (Exception $e) {
+                    dd($e);
+                }
+                
 
                 if ($request->ajax()) {
                     return [
@@ -323,7 +335,8 @@ class ProductController extends Controller
         $userAdmin = Session::get('user');
 
         if (isset($userAdmin) && ($userAdmin->role == User::ADMIN_ROLE || $userAdmin->role == User::DISTRIBUTOR_ROLE)) {
-            $product = $this->dbProductRepository->findByID($product->id);
+            $dbProductRepository = new DbProductRepository();
+            $product = $dbProductRepository->findByID($product->id);
             $data['product_id'] = $product->id;
             $data['user_id'] = $product->user_id;
             $data['category_id'] = $product->category_id;
@@ -381,7 +394,8 @@ class ProductController extends Controller
                 $image = $urlImage;
             }
 
-            $currentStatus = $this->dbProductRepository->findByID($request['product_id'])->status;
+            $dbProductRepository = new DbProductRepository();
+            $currentStatus = $dbProductRepository->findByID($request['product_id'])->status;
             if ($adminUser->role === User::DISTRIBUTOR_ROLE){
                 $status = Product::STATUS_INACTIVE;
             } else {
@@ -394,7 +408,7 @@ class ProductController extends Controller
                 $status = Product::STATUS_ACTIVE;  
             }
             
-            $this->dbProductRepository->update(
+            $dbProductRepository->update(
                 $request['product_id'],
                 $request['category_id'],
                 $request['name'],
@@ -432,11 +446,17 @@ class ProductController extends Controller
     {
         $userAdmin = Session::get('user');
 
-        if (isset($userAdmin) && ($userAdmin->role == User::ADMIN_ROLE || $userAdmin->role == User::DISTRIBUTOR_ROLE)) {
-            $product = $this->dbProductRepository->findByID($product->id);
-            $product->purchase_price = $this->formatCurrency($product->purchase_price) . ' $';
-            $product->sale_price = $this->formatCurrency($product->sale_price) . ' $';
-
+        if (isset($userAdmin) && ($userAdmin->role == User::ADMIN_ROLE || 
+                $userAdmin->role == User::DISTRIBUTOR_ROLE)) {
+            try {
+                $dbProductRepository = new DbProductRepository();
+                $product = $dbProductRepository->findByID($product->id);
+                $product->purchase_price = $this->formatCurrency($product->purchase_price) . ' $';
+                $product->sale_price = $this->formatCurrency($product->sale_price) . ' $';
+            } catch (Throwable $e) {
+                dd($e);
+            }
+           
             return view('admin.products.view', [
                 'product' => $product,
                 'activation' => $userAdmin->name,
@@ -509,7 +529,8 @@ class ProductController extends Controller
         $idsProducts = $request->data['ids'];
 
         foreach ($idsProducts as $item) {
-            $product = $this->dbProductRepository->findByID($item);
+            $dbProductRepository = new DbProductRepository();
+            $product = $dbProductRepository->findByID($item);
             $product->special_price = $newDiscount;
             $product->save();
         }
@@ -698,7 +719,9 @@ class ProductController extends Controller
         $userAdmin = Session::get('user');
 
         if (isset($userAdmin) && ($userAdmin->role == User::ADMIN_ROLE || $userAdmin->role == User::DISTRIBUTOR_ROLE)) {
-            $category = $this->dbProductRepository->findCategoryByID($category->id);
+            $dbProductRepository = new DbProductRepository();
+            $category = $dbProductRepository->findCategoryByID($category->id);
+            
             $data['category_id'] = $category->id;
             $data['name'] = $category->name;
             $data['description'] = $category->description;
@@ -743,7 +766,8 @@ class ProductController extends Controller
                 $image = $urlImage;
             }
 
-            $category = $this->dbProductRepository->findCategoryByID($request['category_id']);
+            $dbProductRepository = new DbProductRepository();
+            $category = $dbProductRepository->findCategoryByID($request['category_id']);
             $category->name = $request['name'];
             $category->description = $request['description'];
 

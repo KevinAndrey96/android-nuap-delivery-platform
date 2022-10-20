@@ -16,7 +16,9 @@ use App\Repositories\Contracts\DbUsersRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use Exception;
+use App\Models\Distributor;
+use App\Models\Commerce;
+use Throwable;
 
 /**
  * Class ProductCategoryController
@@ -168,6 +170,23 @@ class ProductCategoryController
             } else {
                 $stores = $this->dbCommerceRepository->findValidCommercesToAddProducts();
             }
+           
+            $storeID = 0;
+            
+            if ($request->exists('storeID')) {
+                $storeID = $request['storeID'];
+            }
+            
+            if ($storeID != 0) {
+                $stores = null;
+
+                if ($user->role === User::COMMERCE_ROLE) {
+                    $stores = Distributor::where('user_id', $storeID);
+                } else {
+                    $stores = Commerce::where('user_id', $storeID);
+                }
+                $stores = $stores->get();
+            }
 
             $storeIDS = [];
             foreach ($stores as $store) {
@@ -226,8 +245,7 @@ class ProductCategoryController
                 new ProductsTransformer(),
                 'data'
             );
-        } catch (Exception $exception) {
-            dd($exception);
+        } catch (Throwable $exception) {
             $error = new ErrorObject();
             $error->setCode(self::GENERAL_ERROR)
                 ->setTitle(self::ERROR_TITLE)
