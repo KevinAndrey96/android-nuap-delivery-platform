@@ -4,7 +4,7 @@
         <select class="form-control" id="category_id" name="category_id" required>
             <option disabled selected>Categoría</option>
             @foreach ($categories as $category)
-                @if ($product['category_id'] === $category->id )
+                @if ($product['category_id'] == $category->id )
                     <option selected value="{{ $category->id }}">{{ $category->name }}</option>
                 @else
                     <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -124,7 +124,7 @@
     <div :class="'col-md-4 col-md-9 col-xl-7'">
         <select class="form-control" id="is_featured" name="is_featured" required>
             <option disabled selected>Destacado</option>
-            @if ($product['is_featured'] === 1 )
+            @if ($product['is_featured'] == 1 )
                 <option selected value="$product['is_featured']">Activo</option>
                 <option value="0">Inactivo</option>
             @else
@@ -141,7 +141,7 @@
     <div :class="'col-md-4 col-md-9 col-xl-7'">
         <select class="form-control" id="has_special_price" name="has_special_price" required>
             <option disabled selected>Descuento</option>
-            @if ($product['has_special_price'] === 1 )
+            @if ($product['has_special_price'] == 1 )
                 <option selected value="{{ $product['has_special_price'] }}">Activo</option>
                 <option value="0">Inactivo</option>
             @else
@@ -154,7 +154,7 @@
 </div>
 
 <script>
-    if ({{ $product['has_special_price'] }} === 1) {
+    if ({{ $product['has_special_price'] }} == 1) {
         document.getElementById("has_special_price").checked = true;
     } else {
         document.getElementById("has_special_price").checked = false;

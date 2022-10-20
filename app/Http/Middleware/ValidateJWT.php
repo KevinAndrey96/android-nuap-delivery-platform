@@ -50,7 +50,7 @@ class ValidateJWT
     public function handle($request, Closure $next)
     {
         $jwt = new jwt();
-
+        
         if (! isset($request['api_token'])) {
             $error = new ErrorObject();
             $error->setCode(self::API_TOKEN_NOT_FOUND)

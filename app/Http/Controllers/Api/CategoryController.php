@@ -9,6 +9,7 @@ use App\Libraries\Responders\HttpObject;
 use App\Libraries\Responders\JsonApiErrorsFormatter;
 use App\Models\Category;
 use App\Models\Distributor;
+use App\Models\Commerce;
 use App\Models\User;
 use App\Repositories\Contracts\DbProductRepositoryInterface;
 use App\Repositories\Contracts\DbUsersRepositoryInterface;
@@ -142,7 +143,7 @@ class CategoryController
                 $error = new ErrorObject();
                 $error->setCode(self::USER_NOT_FOUND)
                     ->setTitle(self::ERROR_TITLE)
-                    ->setDetail('No se encontró el usuario.')
+                    ->setDetail('No se encontro el usuario.')
                     ->setStatus((string) Response::HTTP_BAD_REQUEST);
                 $this->jsonErrorFormat->add($error);
 
@@ -180,6 +181,23 @@ class CategoryController
             } else {
                 $stores = $this->dbCommerceRepository->findValidCommercesToAddProducts();
             }
+           
+            $storeID = 0;
+            
+            if ($request->exists('storeID')) {
+                $storeID = $request['storeID'];
+            }
+            
+            if ($storeID != 0) {
+                $stores = null;
+
+                if ($user->role === User::COMMERCE_ROLE) {
+                    $stores = Distributor::where('user_id', $storeID);
+                } else {
+                    $stores = Commerce::where('user_id', $storeID);
+                }
+                $stores = $stores->get();
+           }
 
             $storeIDS = [];
             foreach ($stores as $store) {
@@ -210,18 +228,18 @@ class CategoryController
                     array_push($storeIDS, $store->user_id);
                 }
             }
-
+                               
             $categories = $this->dbProductRepository->getEnabledCategories($storeIDS);
-            
+
             $categoryIDS = [];
             foreach ($categories as $category) {
-                if ($category->parent_id === 0) {
+                if ($category->parent_id == 0) {
                     array_push($categoryIDS, $category->id);
                 } else {
                     array_push($categoryIDS, $category->parent_id);
                 }
             }
-            
+
             $categories = $this->dbProductRepository->getCategoriesByID(array_unique($categoryIDS));
 
             if (! count($categories)) {
@@ -246,7 +264,7 @@ class CategoryController
             $error = new ErrorObject();
             $error->setCode(self::GENERAL_ERROR)
                 ->setTitle(self::ERROR_TITLE)
-                ->setDetail('Ha ocurrido un error inesperado')
+                ->setDetail('Ha ocurrido un error inesperado '.$exception)
                 ->setStatus((string) Response::HTTP_INTERNAL_SERVER_ERROR);
             $this->jsonErrorFormat->add($error);
 
