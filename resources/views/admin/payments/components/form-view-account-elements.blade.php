@@ -1,10 +1,10 @@
 <div class="form-group row align-items-center" :class="{'has-danger': errors.has('status'), 'has-success': this.fields.status && this.fields.status.valid }">
     <label for="status" class="col-form-label text-md-right" :class="'col-md-6'"><b>Estado:</b></label>
     <div :class="'col-md-4 col-md-6 col-xl-6'">
-        @if($account['status'] === 1)
+        @if($account['status'] == 1)
             <button disabled style="color: white" class="btn btn-sm btn-success"><i></i>&nbspAprobada</button>
         @endif
-        @if($account['status'] === 0)
+        @if($account['status'] == 0)
             <button disabled style="color: white" class="btn btn-sm btn-danger"><i></i>&nbspPendiente</button>
         @endif
     </div>

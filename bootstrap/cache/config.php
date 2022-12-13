@@ -583,16 +583,16 @@
   'mail' => 
   array (
     'driver' => 'smtp',
-    'host' => 'mail@thenuap.com',
+    'host' => 'mail.thenuap.com',
     'port' => '465',
     'from' => 
     array (
       'address' => 'no-reply@thenuap.com',
       'name' => 'no-reply@thenuap.com',
     ),
-    'encryption' => 'tls',
+    'encryption' => 'ssl',
     'username' => 'no-reply@thenuap.com',
-    'password' => 'Nuap2022#',
+    'password' => 'Nuap2022@',
     'sendmail' => '/usr/sbin/sendmail -bs',
     'markdown' => 
     array (

@@ -18,7 +18,7 @@ class DbDistributorRepository implements DbDistributorRepositoryInterface
      */
     public function findByUserID(int $userID): Distributor
     {
-        return Distributor::where('user_id', $userID);
+        return Distributor::where('user_id', $userID)->first();
     }
 
     /**

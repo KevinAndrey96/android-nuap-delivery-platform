@@ -24,8 +24,8 @@ class BankAccountTransformer extends TransformerAbstract
             'account' => $account->account,
             'account_type' => $account->account_type,
             'bank' => $account->bank,
-            'certificate' => $account->certificate,
-            'status' => $account->status
+            'certificate' => $account->certificate ?? "",
+            'status' => (bool) $account->status
         ];
     }
 }

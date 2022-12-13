@@ -172,8 +172,29 @@ class UpdateStatusController
                 $order->status = Order::STATUS_CIRCULATION;
             } else if ($order->status === Order::STATUS_CIRCULATION) {
                 $order->status = Order::STATUS_DELIVERED;
+                
+                if (! $order->is_cash) {
+                    $commerce = $this->dbCommerceRepository->findByUserID($user->id);
+                    $balance = Balance::where('user_id', $commerce->id)->get();
+                    $totalWithoutCommission = $order->total_amount - (($order->total_amount * $commerce->commission) / 100);
+                    
+                    if (! count($balance)) {
+                        $balance = new Balance();
+                        $balance->user_id = $commerce->id;
+                        $balance->user_type = 'Comercio';
+                        $balance->balance = $totalWithoutCommission;
+                        $balance->paid_out = 0;
+                        $balance->total = $totalWithoutCommission;
+                        $balance->requested_value = 0;
+                    } else {
+                        $balance = Balance::findOrFail($balance->first()->id);
+                        $balance->balance += $totalWithoutCommission;
+                        $balance->total += $totalWithoutCommission;
+                    }
+                    $balance->save();
+                }
 
-                if ($order->is_cash) {
+                /*La if ($order->is_cash) {
                     $commerce = $this->dbCommerceRepository->findByUserID($user->id);
                     $balance = Balance::where('user_id', $commerce->id)->get();
                     $commission = ($order->total_amount * $commerce->commission) / 100;
@@ -191,7 +212,7 @@ class UpdateStatusController
                         $balance->total += -$commission;
                     }
                     $balance->save();
-                }
+                }*/
             }
 
             $currentDate = date('Y-m-d H:i:s');

@@ -7,3 +7,77 @@
 [22-Jul-2021 02:26:38 UTC] PHP Warning:  require(/home/thenuap/repositories/nuap/vendor/composer/../symfony/polyfill-intl-normalizer/bootstrap.php): failed to open stream: No such file or directory in /home/thenuap/repositories/nuap/vendor/composer/autoload_real.php on line 71
 [22-Jul-2021 02:26:38 UTC] PHP Warning:  require(/home/thenuap/repositories/nuap/vendor/composer/../symfony/polyfill-intl-normalizer/bootstrap.php): failed to open stream: No such file or directory in /home/thenuap/repositories/nuap/vendor/composer/autoload_real.php on line 71
 [22-Jul-2021 02:26:38 UTC] PHP Fatal error:  require(): Failed opening required '/home/thenuap/repositories/nuap/vendor/composer/../symfony/polyfill-intl-normalizer/bootstrap.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/thenuap/repositories/nuap/vendor/composer/autoload_real.php on line 71
+[19-Oct-2022 20:54:35 America/Bogota] PHP Fatal error:  Uncaught ErrorException: Method ReflectionParameter::getClass() is deprecated in /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php:838
+Stack trace:
+#0 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(838): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(807): Illuminate\Container\Container->resolveDependencies()
+#2 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(658): Illuminate\Container\Container->build()
+#3 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(609): Illuminate\Container\Container->resolve()
+#4 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(759): Illuminate\Container\Container->make()
+#5 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(264): Illuminate\Foundation\Application->make()
+#6 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(776): Illuminate\Container\Container->Illuminate\Container\{closure}()
+#7 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(658): Illuminate\Container\Container->build()
+#8 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(609): Illuminate\Container\Container->resolve()
+#9 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(759): Illuminate\Container\Container->make()
+#10 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(159): Illuminate\Foundation\Application->make()
+#11 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(101): Illuminate\Foundation\Bootstrap\HandleExceptions->getExceptionHandler()
+#12 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(87): Illuminate\Foundation\Bootstrap\HandleExceptions->renderForConsole()
+#13 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#14 {main}
+  thrown in /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 838
+[19-Oct-2022 20:54:35 America/Bogota] PHP Fatal error:  Uncaught ErrorException: Method ReflectionParameter::getClass() is deprecated in /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php:838
+Stack trace:
+#0 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(838): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(807): Illuminate\Container\Container->resolveDependencies()
+#2 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(658): Illuminate\Container\Container->build()
+#3 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(609): Illuminate\Container\Container->resolve()
+#4 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(759): Illuminate\Container\Container->make()
+#5 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(264): Illuminate\Foundation\Application->make()
+#6 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(776): Illuminate\Container\Container->Illuminate\Container\{closure}()
+#7 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(658): Illuminate\Container\Container->build()
+#8 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(609): Illuminate\Container\Container->resolve()
+#9 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(759): Illuminate\Container\Container->make()
+#10 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(159): Illuminate\Foundation\Application->make()
+#11 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(101): Illuminate\Foundation\Bootstrap\HandleExceptions->getExceptionHandler()
+#12 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(87): Illuminate\Foundation\Bootstrap\HandleExceptions->renderForConsole()
+#13 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(123): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#14 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#15 {main}
+  thrown in /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 838
+[19-Oct-2022 20:54:38 America/Bogota] PHP Fatal error:  Uncaught ErrorException: Method ReflectionParameter::getClass() is deprecated in /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php:838
+Stack trace:
+#0 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(838): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(807): Illuminate\Container\Container->resolveDependencies()
+#2 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(658): Illuminate\Container\Container->build()
+#3 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(609): Illuminate\Container\Container->resolve()
+#4 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(759): Illuminate\Container\Container->make()
+#5 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(264): Illuminate\Foundation\Application->make()
+#6 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(776): Illuminate\Container\Container->Illuminate\Container\{closure}()
+#7 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(658): Illuminate\Container\Container->build()
+#8 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(609): Illuminate\Container\Container->resolve()
+#9 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(759): Illuminate\Container\Container->make()
+#10 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(159): Illuminate\Foundation\Application->make()
+#11 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(101): Illuminate\Foundation\Bootstrap\HandleExceptions->getExceptionHandler()
+#12 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(87): Illuminate\Foundation\Bootstrap\HandleExceptions->renderForConsole()
+#13 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#14 {main}
+  thrown in /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 838
+[19-Oct-2022 20:54:38 America/Bogota] PHP Fatal error:  Uncaught ErrorException: Method ReflectionParameter::getClass() is deprecated in /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php:838
+Stack trace:
+#0 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(838): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(807): Illuminate\Container\Container->resolveDependencies()
+#2 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(658): Illuminate\Container\Container->build()
+#3 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(609): Illuminate\Container\Container->resolve()
+#4 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(759): Illuminate\Container\Container->make()
+#5 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(264): Illuminate\Foundation\Application->make()
+#6 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(776): Illuminate\Container\Container->Illuminate\Container\{closure}()
+#7 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(658): Illuminate\Container\Container->build()
+#8 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php(609): Illuminate\Container\Container->resolve()
+#9 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(759): Illuminate\Container\Container->make()
+#10 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(159): Illuminate\Foundation\Application->make()
+#11 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(101): Illuminate\Foundation\Bootstrap\HandleExceptions->getExceptionHandler()
+#12 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(87): Illuminate\Foundation\Bootstrap\HandleExceptions->renderForConsole()
+#13 /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(123): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#14 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#15 {main}
+  thrown in /home/thenuap/repositories/nuap/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 838

@@ -166,15 +166,19 @@ class CreateAccountController
             }
 
             $commerce = Commerce::where('user_id', $user->id)->first();
-            Mail::to($emails)->send(new SendEmail(
-                    '',
-                    sprintf('%s ha creado o actualizado su cuenta bancaria, por favor revisalo lo antes
-                                posible para gestionar su aprobación. Click en el siguiente enlace para ver esta cuenta 
-                                https://thenuap.com/admin/users/'.$user->id.'/view-account',
-                        $commerce->business_name),
-                    '¡Han creado o actualizado una cuenta bancaria!.'
-                )
-            );
+            try {
+                Mail::to($emails)->send(new SendEmail(
+                        '',
+                        sprintf('%s ha creado o actualizado su cuenta bancaria, por favor revisalo lo antes
+                                    posible para gestionar su aprobación. Click en el siguiente enlace para ver esta cuenta 
+                                    https://thenuap.com/admin/users/'.$user->id.'/view-account',
+                            $commerce->business_name),
+                        '¡Han creado o actualizado una cuenta bancaria!.'
+                    )
+                );
+            } catch (Exception $exception) { 
+                // mail error
+            }
 
             return $this->arrayResponse->responseWithItem(
                 $this->httpObject,

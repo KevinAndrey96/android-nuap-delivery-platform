@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Order\IndexOrder;
 use App\Mail\SendEmail;
 use App\Models\Balance;
 use App\Models\Order;
+use App\Models\Distributor;
 use App\Models\User;
 use App\Repositories\Contracts\DbClientRepositoryInterface;
 use App\Repositories\Contracts\DbCommerceRepositoryInterface;
@@ -219,12 +220,17 @@ class OrderController extends Controller
 
             if ($status === Order::STATUS_ACCEPTED) {
                 $order->status = Order::STATUS_ENLISTMENT;
-                Mail::to($client->email)->send(new SendEmail(
-                        $commerce->business_name,
-                    '¡Hola! tu pedido esta en alistamiento, ¡Atento! nos pondremos en contacto para acordar tu entrega.',
-                        'Hemos alistado tu pedido !'
-                    )
-                );
+                
+                try {
+                    Mail::to($client->email)->send(new SendEmail(
+                            $commerce->business_name,
+                        '¡Hola! tu pedido esta en alistamiento, ¡Atento! nos pondremos en contacto para acordar tu entrega.',
+                            'Hemos alistado tu pedido !'
+                        )
+                    );
+                } catch (Throwable $e) {
+                    // mail error.
+                }
 
                 if (env('SMS_ENABLED')) {
                     $this->sendSMSService->sendMessage(
@@ -237,12 +243,16 @@ class OrderController extends Controller
 
             if ($status === Order::STATUS_ENLISTMENT) {
                 $order->status = Order::STATUS_CIRCULATION;
-                Mail::to($client->email)->send(new SendEmail(
-                        $commerce->business_name,
-                        'Tu pedido esta en camino, ¡Atento! el repartidor no tardara en hacer la entrega.',
-                        'Tu pedido esta en camino !'
-                    )
-                );
+                try {
+                    Mail::to($client->email)->send(new SendEmail(
+                            $commerce->business_name,
+                            'Tu pedido esta en camino, ¡Atento! el repartidor no tardara en hacer la entrega.',
+                            'Tu pedido esta en camino !'
+                        )
+                    );
+                } catch (Throwable $e) {
+                    // mail error.
+                }    
 
                 if (env('SMS_ENABLED')) {
                     $this->sendSMSService->sendMessage(
@@ -255,12 +265,16 @@ class OrderController extends Controller
 
             if ($status === Order::STATUS_CIRCULATION) {
                 $order->status = Order::STATUS_DELIVERED;
-                Mail::to($client->email)->send(new SendEmail(
-                        $commerce->business_name,
-                        'Gracias por comprar en NuAp,tu pedido ha sido entregado, por favor califica nuestro servicio.',
-                        'Hemos entregado tu pedido !'
-                    )
-                );
+                try {
+                    Mail::to($client->email)->send(new SendEmail(
+                            $commerce->business_name,
+                            'Gracias por comprar en NuAp,tu pedido ha sido entregado, por favor califica nuestro servicio.',
+                            'Hemos entregado tu pedido !'
+                        )
+                    );
+                } catch (Throwable $e) {
+                    // mail error.
+                }
 
                 if (env('SMS_ENABLED')) {
                     $this->sendSMSService->sendMessage(
@@ -269,8 +283,30 @@ class OrderController extends Controller
                         ! is_null($client->country_code) ? $client->country_code : 57
                     );
                 }
+                
+                if (! $order->is_cash) {
+                    $distributor = Distributor::where('user_id', $user->id)->first();
+                    $balance = Balance::where('user_id', $distributor->id)->get();
+                    $totalWithoutCommission = $order->total_amount - (($order->total_amount * $distributor->commission) / 100);
+                    
+                    if (! count($balance)) {
+                        $balance = new Balance();
+                        $balance->user_id = $distributor->id;
+                        $balance->user_type = 'Distribuidor';
+                        $balance->balance = $totalWithoutCommission;
+                        $balance->paid_out = 0;
+                        $balance->total = $totalWithoutCommission;
+                        $balance->requested_value = 0;
+                    } else {
+                        $balance = Balance::findOrFail($balance->first()->id);
+                        $balance->balance += $totalWithoutCommission;
+                        $balance->total += $totalWithoutCommission;
+                    }
+                    $balance->save();
+                }
 
-                if ($order->is_cash) {
+                // Ya no se necesita restar ya que no se suma el balance al crear la orden
+                /*if ($order->is_cash) {
                     $distributor = $this->dbDistributorRepository->findByUserID($user->id);
                     $balance = Balance::where('user_id', $distributor->id)->get();
                     $commission = ($order->total_amount * $distributor->commission) / 100;
@@ -288,7 +324,7 @@ class OrderController extends Controller
                         $balance->first()->total += -$commission;
                     }
                     $balance->save();
-                }
+                } */
             }
             
             $currentDate = date('Y-m-d H:i:s');
@@ -380,5 +416,28 @@ class OrderController extends Controller
         } else {
             return redirect('/admin/user-session');
         }
+    }
+    
+    /**
+     * @param Request $request
+     * @return array|Factory|Application|RedirectResponse|Redirector|View
+     */
+    public function deliveryDate(Request $request)
+    {
+        $order = $this->dbOrderRepository->findByID((int) $request['order_id']);
+        return view('admin.orders.delivery-date', ['order' => $order]);
+    }
+    
+        /**
+     * @param Request $request
+     * @return Application|RedirectResponse|Redirector
+     */
+    public function deliverDateApp(Request $request)
+    {
+        $order = $this->dbOrderRepository->findByID((int) $request['order_id']);
+        $order->delivery_date = $request['deliver_date'];
+        $order->save();
+        
+        return view('admin.orders.success-delivery-date', ['order' => $order]);
     }
 }

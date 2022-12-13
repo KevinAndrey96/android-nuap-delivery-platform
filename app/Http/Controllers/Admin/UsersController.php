@@ -752,13 +752,13 @@ class UsersController extends Controller
             $user = $this->dbUserRepository->findByID($userLocation->user_id);
 
             if ($user->role == User::DISTRIBUTOR_ROLE) {
-                return redirect('admin/distributor-list');
+                //return redirect('admin/distributor-list');
             }
             if ($user->role == User::COMMERCE_ROLE) {
-                return redirect('admin/commerce-list');
+                //return redirect('admin/commerce-list');
             }
             if ($user->role == User::USER_ROLE) {
-                return redirect('admin/client-list');
+                //return redirect('admin/client-list');
             }
 
         } else {
