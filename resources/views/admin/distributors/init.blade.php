@@ -65,7 +65,7 @@
                 </div>
                 <div class="card-header">
                     <div class="form-group row align-items-center">
-                        <img src="{{URL::asset('images/banner.jpeg')}}" alt="nuap" class="img-responsive" width="100%">
+                        <img src="{{URL::asset('images/bannerwelcome.png')}}" alt="nuap" class="img-responsive" width="100%">
                     </div>
                 </div>
                 <div class="row">

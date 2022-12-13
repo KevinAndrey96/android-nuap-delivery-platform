@@ -64,13 +64,13 @@
                                 <td v-if="item.status === 'Cancelado'">
                                     <div class="col text-center"><button disabled style="color: white" class="btn btn-sm btn-status-cancel"><i></i>&nbspCancelado</button></div>
                                 </td>
-                                <td v-if="item.status === 'Rechazado'">
+                                <td v-if="item.status == 'Rechazado'">
                                     <div class="col text-center"><button disabled style="color: white" class="btn btn-sm btn-danger"><i></i>&nbspRechazado</button></div>
                                 </td>
-                                <td v-if="item.status === 'Aprobado'">
+                                <td v-if="item.status == 'Aprobado'">
                                     <div class="col text-center"><button disabled style="color: white" class="btn btn-sm btn-success"><i></i>&nbspAprobado</button></div>
                                 </td>
-                                <td v-if="item.status === 'Pendiente'">
+                                <td v-if="item.status == 'Pendiente'">
                                     <div class="col text-center"><button disabled style="color: white" class="btn btn-sm btn-info"><i></i>&nbspPendiente</button></div>
                                 </td>
                                 <td>
@@ -106,13 +106,13 @@
         <div class="card-header">
             <i class="fa fa-align-justify"></i>  Solicitar Retiro
         </div>
-        @if($account->status === 1)
+        @if($account->status == 1)
             <form id="form-basic" method="post" enctype="multipart/form-data" action="{{ url('admin/payment/request-payment') }}">
                 <div style="padding-top: 0px" class="card-footer">
                     <div class="form-group row align-items-center">
                         <label style="color: #2d3093" for="issues" class="col-form-label text-md-right" :class="'col-md-3'"><b>Saldo disponible:</b></label>
                         <div :class="'col-md-4 col-md-7 col-xl-7'">
-                            <label id="requested_value" style="color: #2d3093" class="col-form-label text-md-right"><b>{{ $balance->requested_value }}</b></label>
+                            <label id="requested_value" style="color: #2d3093" class="col-form-label text-md-right"><b>{{ $balance->balance }}</b></label>
                         </div>
                     </div>
                     <div class="form-group row align-items-center" :class="{'has-danger': errors.has('value'), 'has-success': this.fields.value && this.fields.value.valid }">

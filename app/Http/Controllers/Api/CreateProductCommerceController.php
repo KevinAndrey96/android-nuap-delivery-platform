@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Exception;
+use Throwable;
 
 /**
  * Class RegisterClientController
@@ -205,15 +206,19 @@ class CreateProductCommerceController
                 }
 
                 $commerce = Commerce::where('user_id', $user->id)->first();
-                Mail::to($emails)->send(new SendEmail(
-                        '',
-                        sprintf("%s ha creado un nuevo producto con el id %d, por favor revisalo lo antes
-                                posible para gestionar su aprobación. Click en el siguiente enlace para ver el producto 
-                                https://thenuap.com/admin/product-list",
-                            $commerce->business_name, $product->id),
-                        '¡Han creado un nuevo producto!.'
-                    )
-                );
+                try {
+                    Mail::to($emails)->send(new SendEmail(
+                            '',
+                            sprintf("%s ha creado un nuevo producto con el id %d, por favor revisalo lo antes
+                                    posible para gestionar su aprobación. Click en el siguiente enlace para ver el producto 
+                                    https://thenuap.com/admin/product-list",
+                                $commerce->business_name, $product->id),
+                            '¡Han creado un nuevo producto!.'
+                        )
+                    );
+                } catch (Throwable $exception) {
+                    // mail error
+                }
             } else {
                 $product = $this->dbProductRepository->findByID($request->input('product_id'));
                 

@@ -185,7 +185,6 @@ class ProductCategoryController
                 } else {
                     $stores = Commerce::where('user_id', $storeID);
                 }
-                $stores = $stores->get();
             }
 
             $storeIDS = [];
@@ -225,7 +224,11 @@ class ProductCategoryController
                 $categoryList[] = $category->id;
             }
 
-            $products = $this->dbProductRepository->getSalesByUserIDAndCategoryID($storeIDS, $categoryList);
+            if ($storeID != 0) {
+                $products = $this->dbProductRepository->getProductsByStore($storeID);
+            } else {
+                $products = $this->dbProductRepository->getSalesByUserIDAndCategoryID($storeIDS, $categoryList);
+            }
 
             if (! count($products)) {
                 $error = new ErrorObject();

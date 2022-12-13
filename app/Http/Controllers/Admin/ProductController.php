@@ -89,7 +89,7 @@ class ProductController extends Controller
     public function list(IndexProduct $request)
     {
         $user = Session::get('user');
-
+        
         if (isset($user) && $user->role == User::ADMIN_ROLE) {
             /* @noinspection PhpUndefinedMethodInspection  */
             $data = AdminListing::create(Product::class)
@@ -281,11 +281,12 @@ class ProductController extends Controller
     {
         $userAdmin = Session::get('user');
 
+        $dbProductRepository = new DbProductRepository();
         if (isset($userAdmin) && $userAdmin->role == User::ADMIN_ROLE) {
             if ($product->status == Product::STATUS_ACTIVE) {
-                $this->dbProductRepository->changeStatus($product->id, Product::STATUS_INACTIVE);
+                $dbProductRepository->changeStatus($product->id, Product::STATUS_INACTIVE);
             } else {
-                $this->dbProductRepository->changeStatus($product->id, Product::STATUS_ACTIVE);
+                $dbProductRepository->changeStatus($product->id, Product::STATUS_ACTIVE);
             }
 
             return response(['redirect' => url('admin/product-list')]);
@@ -402,7 +403,8 @@ class ProductController extends Controller
                 $status = $currentStatus;
             }
             
-            $currentStock = $this->dbProductRepository->findByID($request['product_id'])->stock;
+            $dbProductRepository = new DbProductRepository();
+            $currentStock = $dbProductRepository->findByID($request['product_id'])->stock;
             
             if ($adminUser->role === User::DISTRIBUTOR_ROLE && $currentStock != (int) $request['stock'] && $currentStatus == Product::STATUS_ACTIVE) {
                 $status = Product::STATUS_ACTIVE;  
@@ -570,7 +572,7 @@ class ProductController extends Controller
                         'products.*',
                         'categories.name as category_id'
                     )->where('user_id', Session::get('user')->id)
-                    ->where('stock', $this->stock, $this->stockValue)
+                    ->where('status', $this->stock, $this->stockValue)
                     ->join('categories', 'categories.id', '=', 'products.category_id')
                     ->orderBy('id', 'desc');
                 })->processRequestAndGet(

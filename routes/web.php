@@ -14,30 +14,35 @@
 use Illuminate\Support\Facades\Route;
 
 ### Home ###
+Route::get('/', 'Admin\ViewController@index');
 /* Coming soon */
-Route::get('/', function (){
+/*Route::get('/', function (){
     return view('admin.home.index');
-});
+});*/
 
 /* Privacy policy */
-Route::get('/privacy-policy', function (){
+Route::get('/privacy-policy', 'Admin\ViewController@privacyPolicy');
+/*Route::get('/privacy-policy', function (){
     return view('admin.home.privacy-policy');
-});
+});*/
 
 /* Terms and conditions user */
-Route::get('/user/terms-and-conditions', function (){
+Route::get('/user/terms-and-conditions', 'Admin\ViewController@userTermsAndConditions');
+/*Route::get('/user/terms-and-conditions', function (){
     return view('admin.home.user-terms-and-conditions');
-});
+});*/
 
 /* Termins and conditions commerce */
-Route::get('/commerce/terms-and-conditions', function (){
+Route::get('/commerce/terms-and-conditions', 'Admin\ViewController@commerceTermsAndConditions');
+/*Route::get('/commerce/terms-and-conditions', function (){
     return view('admin.home.commerce-terms-and-conditions');
-});
+});*/
 
 /* Login */
-Route::get('/admin/login-user', function (){
+Route::get('/admin/login-user', 'Admin\ViewController@loginUser');
+/*Route::get('/admin/login-user', function (){
     return view('vendor.brackets.admin-auth.admin.auth.login-user');
-});
+});*/
 
 /* Pre register */
 Route::post('/admin/pre-register', 'Admin\AdminUsersController@preRegister');
@@ -46,16 +51,20 @@ Route::post('/admin/pre-register', 'Admin\AdminUsersController@preRegister');
 Route::get('/payment-response', 'Admin\PaymentGatewayController@response');
 
 /* Payment Response */
-Route::post('/payment-acepted', 'Admin\PaymentGatewayController@responseAcepted');
+Route::get('/payment-confirm', 'Admin\PaymentGatewayController@responseConfirm');
+
+/* Payment Response */
+Route::get('/payment-acepted', 'Admin\PaymentGatewayController@responseAcepted'); 
 
 /* Payment gateway */
 Route::get('/payment-gateway', 'Admin\PaymentGatewayController@index');
 
 ### Users ###
 /* Recover password */
-Route::get('/recover-password', function (){
+Route::get('/recover-password', 'Admin\ViewController@recoverPassword');
+/*Route::get('/recover-password', function (){
     return view('admin.users.recover-password');
-});
+});*/
 /* Recover password send code*/
 Route::post('/send-code-recover-password', 'Admin\UsersController@recoverPassword');
 /* Change password */
@@ -89,9 +98,10 @@ Route::delete('/admin/user-location/{user}', 'Admin\UsersController@deleteLocati
 /* View bank account */
 Route::get('/admin/users/{user}/view-account', 'Admin\PaymentController@viewAccount')->name('admin/users/view-account');
 /* View Address iOS */
-Route::get('/create-address', function (){
+Route::get('/create-address', 'Admin\ViewController@createAddress');
+/*Route::get('/create-address', function (){
     return view('admin.users.create-address');
-});
+});*/
 /* Create Address iOS */
 Route::post('/admin/users/create-address', 'Admin\UsersController@createAddress');
 
@@ -278,3 +288,14 @@ Route::get('/admin/order/{order}/view', 'Admin\OrderController@view')->name('adm
 Route::post('/admin/order/change-status', 'Admin\OrderController@changeStatus');
 /* Set deliver date */
 Route::post('/admin/order/deliver-date', 'Admin\OrderController@deliverDate');
+/* Set delivery date */
+Route::get('/delivery-date', 'Admin\OrderController@deliveryDate');
+/* Set delivery date app */
+Route::post('/set-delivery-date', 'Admin\OrderController@deliverDateApp');
+/* Set success delivery date */
+Route::get('/success-delivery-date', 'Admin\ViewController@successDeliveryDate');
+/*Route::get('/success-delivery-date', function (){
+    return view('admin.orders.success-delivery-date');
+});*/
+
+

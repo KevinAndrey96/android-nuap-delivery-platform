@@ -225,12 +225,16 @@ class CreateOrderController
                 
                 $seller = $this->dbUserRepository->findByID($store);
 
-                Mail::to($seller->email)->send(new SendEmail(
-                        $dataStore->first()->business_name,
-                    'Te acaban de realizar una compra, por favor revisa el pedido',
-                        'Te han realizado una compra !'
-                    )
-                );
+                try {
+                    Mail::to($seller->email)->send(new SendEmail(
+                            $dataStore->first()->business_name,
+                        'Te acaban de realizar una compra, por favor revisa el pedido',
+                            'Te han realizado una compra !'
+                        )
+                    );
+                } catch (Throwable $exception) {
+                    // mail error
+                }
 
                 foreach ($request['products'] as $product) {
                     $data = Product::findOrFail($product['id']);
@@ -251,7 +255,7 @@ class CreateOrderController
                 }
                 $orders[] = $order->id;
 
-                $balance = Balance::where('user_id', $dataStore->first()->id)->get();
+                /*$balance = Balance::where('user_id', $dataStore->first()->id)->get();
                 $totalWithoutCommission = $total - (($total * $dataStore->first()->commission) / 100);
                 if (! count($balance)) {
                     $balance = new Balance();
@@ -266,7 +270,7 @@ class CreateOrderController
                     $balance->balance += $totalWithoutCommission;
                     $balance->total += $totalWithoutCommission;
                 }
-                $balance->save();
+                $balance->save(); */
             }
 
             $this->httpObject->setBody([

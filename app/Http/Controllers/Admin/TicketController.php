@@ -26,6 +26,7 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
+use Exception;
 
 /**
  * Class TicketController
@@ -171,18 +172,22 @@ class TicketController extends Controller
                 }
             }
 
-            Mail::to($emails)->send(new SendEmail(
-                    '',
-                    'Tienes un nuevo mensaje de soporte, responde lo antes posible',
-                    '¡Han creado un nuevo ticket!.'
-                )
-            );
-
-            if ($request->ajax()) {
-                return [
-                    'redirect' => url('admin/ticket-list'),
-                    'message' => trans('brackets/admin-ui::admin.operation.succeeded')
-                ];
+            try {
+                Mail::to($emails)->send(new SendEmail(
+                        '',
+                        'Tienes un nuevo mensaje de soporte, responde lo antes posible',
+                        '¡Han creado un nuevo ticket!.'
+                    )
+                );
+    
+                if ($request->ajax()) {
+                    return [
+                        'redirect' => url('admin/ticket-list'),
+                        'message' => trans('brackets/admin-ui::admin.operation.succeeded')
+                    ];
+                }
+            } catch (Exception $e) {
+                // mail error
             }
 
             return redirect('admin/ticket-list');
@@ -316,13 +321,18 @@ class TicketController extends Controller
                     $adminResponse = false;
                 }
             }
-
-            Mail::to($emails)->send(new SendEmail(
-                    '',
-                    'Tienes un nuevo mensaje de soporte, responde lo antes posible',
-                    '¡Han respondido tu mensaje!.'
-                )
-            );
+            
+            try {
+                Mail::to($emails)->send(new SendEmail(
+                        '',
+                        'Tienes un nuevo mensaje de soporte, responde lo antes posible',
+                        '¡Han respondido tu mensaje!.'
+                    )
+                );
+            } catch (Exception $e) {
+                // mail error
+            }
+            
 
             $emails = [];
             if (! $adminResponse) {
@@ -340,12 +350,17 @@ class TicketController extends Controller
                     }
                 }
 
-                Mail::to($emails)->send(new SendEmail(
-                        '',
-                        '¡Han creado un nuevo ticket!.',
-                        'Tienes un nuevo mensaje de soporte, responde lo antes posible'
-                    )
-                );
+                try {
+                    Mail::to($emails)->send(new SendEmail(
+                            '',
+                            '¡Han creado un nuevo ticket!.',
+                            'Tienes un nuevo mensaje de soporte, responde lo antes posible'
+                        )
+                    );
+                    
+                } catch (Exception $e) {
+                    // mail error
+                }
             }
 
             TicketMessage::create($message);
