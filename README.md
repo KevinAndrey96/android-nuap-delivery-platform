@@ -1,6 +1,6 @@
 # NUAP: On-Demand Beverage Delivery Platform
 
-[![CI Pipeline](https://github.com/KevinAndrey96/on-demand-beverage-delivery-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/KevinAndrey96/on-demand-beverage-delivery-platform/actions/workflows/ci.yml)
+[![CI Pipeline](https://github.com/KevinAndrey96/android-nuap-delivery-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/KevinAndrey96/android-nuap-delivery-platform/actions/workflows/ci.yml)
 [![PHP Version](https://img.shields.io/badge/PHP-7.4%20%7C%208.1-777BB4?logo=php&logoColor=white)](https://www.php.net)
 [![Laravel](https://img.shields.io/badge/Laravel-5.7+-FF2D20?logo=laravel&logoColor=white)](https://laravel.com)
 [![Xamarin](https://img.shields.io/badge/Xamarin.Forms-Android%20%26%20iOS-3498DB?logo=xamarin&logoColor=white)](https://dotnet.microsoft.com/apps/xamarin)
@@ -62,7 +62,7 @@ flowchart TD
 ## Estructura del Monorepo
 
 ```
-on-demand-beverage-delivery-platform/
+android-nuap-delivery-platform/
 ├── .github/
 │   └── workflows/
 │       └── ci.yml               # Pipeline de integracion continua automatizado
@@ -140,8 +140,8 @@ on-demand-beverage-delivery-platform/
 
 1. Clonar el repositorio:
    ```bash
-   git clone git@github.com:KevinAndrey96/on-demand-beverage-delivery-platform.git
-   cd on-demand-beverage-delivery-platform
+   git clone git@github.com:KevinAndrey96/android-nuap-delivery-platform.git
+   cd android-nuap-delivery-platform
    ```
 
 2. Configurar el archivo de variables de entorno del backend:
