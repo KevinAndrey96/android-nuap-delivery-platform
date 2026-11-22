@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="nuap.Views.UserProfilePage"
+             BindingContext="{Binding Main, Source={StaticResource Locator}}"
+             BackgroundImageSource="Register_2.png">
+    <ContentPage.Content>
+        <StackLayout
+            BindingContext="{Binding UserProfile}"
+            Padding="20,10,20,0">
+            <StackLayout
+                Orientation="Horizontal">
+                <Image
+                    WidthRequest="30"
+                    Margin="0,20,0,10"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"
+                    Source="flecha">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ReturnCommand}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+            </StackLayout>
+            <Label
+                Text="Editar Perfil"
+                Padding="20,70,0,0"
+                TextColor="#0274bc" 
+                FontFamily="Poppins-Bold"
+                FontSize="20"
+                VerticalOptions="Center">
+            </Label>
+            <StackLayout
+                Padding="20,20,20,50">
+                <Label
+                    Text="Nombre"
+                    FontFamily="Poppins"
+                    TextColor="#949494"
+                    FontSize="16"
+                    VerticalOptions="Center">
+                </Label>
+                <StackLayout
+                    Orientation="Horizontal">
+                    <Image 
+                        HorizontalOptions="Start" 
+                        Source="ic_user">
+                    </Image>
+                    <Entry
+                        FontFamily="Poppins"
+                        HorizontalOptions="FillAndExpand" 
+                        FontSize="16"
+                        TextColor="#3a3a3a"
+                        Text="{Binding Name, Mode=TwoWay}">
+                    </Entry>
+                </StackLayout>
+                <Label
+                    Text="E-mail"
+                    FontFamily="Poppins"
+                    TextColor="#949494"
+                    FontSize="16"
+                    VerticalOptions="Center">
+                </Label>
+                <StackLayout
+                    Orientation="Horizontal">
+                    <Image 
+                        HorizontalOptions="Start" 
+                        Source="ic_envelope">
+                    </Image>
+                    <Label
+                        FontFamily="Poppins"
+                        HorizontalOptions="FillAndExpand" 
+                        FontSize="16"
+                        TextColor="#3a3a3a"
+                        Text="{Binding Email}">
+                    </Label>
+                </StackLayout>
+                <Label
+                    Text="Teléfono"
+                    TextColor="#949494"
+                    FontFamily="Poppins"
+                    FontSize="16"
+                    VerticalOptions="Center">
+                </Label>
+                <StackLayout
+                    Orientation="Horizontal">
+                    <Image 
+                        HorizontalOptions="Start" 
+                        Source="ic_smartphone">
+                    </Image>
+                    <Label
+                        FontFamily="Poppins"
+                        FontSize="16"
+                        HorizontalOptions="FillAndExpand" 
+                        TextColor="#3a3a3a"
+                        Text="{Binding Phone}">
+                    </Label>
+                </StackLayout>
+                <!--<Label
+                    Padding="0,15,0,0"
+                    Text="¿Deseas cambiar tu contraseña?"
+                    TextColor="#0274bc" 
+                    FontFamily="Poppins-Bold"
+                    FontSize="15"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+                </Label>
+                <StackLayout
+                    Padding="20,10,20,0">
+                    <Button
+                        Text="Cambiar Clave"
+                        FontFamily="Poppins"
+                        TextTransform="None"
+                        BackgroundColor="#ffc33a"
+                        HeightRequest="50"
+                        TextColor="#4d483a"
+                        BorderRadius="25"
+                        Padding="0,15"
+                        FontSize="16"
+                        Command="{Binding ChangePasswordCommand}"
+                        IsEnabled="{Binding IsEnabled, Mode=TwoWay}">
+                    </Button>
+                </StackLayout>-->
+                <StackLayout
+                    Padding="40,60,40,0">
+                    <Button
+                        Text="Guardar Cambios"
+                        FontFamily="Poppins"
+                        TextTransform="None"
+                        BackgroundColor="#fd8700"
+                        HeightRequest="50"
+                        TextColor="White"
+                        BorderRadius="25"
+                        Padding="0,15"
+                        FontSize="16"
+                        VerticalOptions="End"
+                        Command="{Binding UpdateProfileCommand}"
+                        IsEnabled="{Binding IsEnabled, Mode=TwoWay}">
+                    </Button>
+                </StackLayout>
+                <StackLayout
+                    Padding="40,10,40,0">
+                    <Button
+                        Text="Cambiar contraseña"
+                        FontFamily="Poppins"
+                        TextTransform="None"
+                        BackgroundColor="#ffc33a"
+                        HeightRequest="50"
+                        TextColor="White"
+                        BorderRadius="25"
+                        Padding="0,15"
+                        FontSize="16"
+                        VerticalOptions="End"
+                        Command="{Binding ChangePasswordCommand}"
+                        IsEnabled="{Binding IsEnabled, Mode=TwoWay}">
+                    </Button>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

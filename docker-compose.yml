@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  backend-app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: nuap-backend-app
+    restart: unless-stopped
+    working_dir: /var/www/html/backend
+    volumes:
+      - .:/var/www/html
+    environment:
+      APP_NAME: "NUAP Beverage Delivery"
+      APP_ENV: local
+      APP_DEBUG: "true"
+      DB_CONNECTION: mysql
+      DB_HOST: database
+      DB_PORT: 3306
+      DB_DATABASE: nuap_delivery
+      DB_USERNAME: nuap_user
+      DB_PASSWORD: nuap_secret
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - nuap-network
+
+  webserver:
+    image: nginx:1.25-alpine
+    container_name: nuap-webserver
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend-app
+    networks:
+      - nuap-network
+
+  database:
+    image: mysql:8.0
+    container_name: nuap-database
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_secret_password
+      MYSQL_DATABASE: nuap_delivery
+      MYSQL_USER: nuap_user
+      MYSQL_PASSWORD: nuap_secret
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./database/seeds.sql:/docker-entrypoint-initdb.d/02-seeds.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_secret_password"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - nuap-network
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: nuap-mailpit
+    restart: unless-stopped
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    networks:
+      - nuap-network
+
+networks:
+  nuap-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local
