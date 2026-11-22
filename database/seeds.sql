@@ -115,8 +115,8 @@ INSERT INTO `config` (`id`, `shipping_cost`, `distance`, `created_at`, `updated_
 
 -- 17. Session Logs
 INSERT INTO `session_logs` (`id`, `user_id`, `user_type`, `login_date`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Administrador', '2023-01-10 08:30:00', '2023-01-10 08:30:00'),
-(2, 2, 'Comercio', '2023-01-15 14:20:00', '2023-01-15 14:20:00'),
-(3, 6, 'Usuario', '2023-01-25 21:00:00', '2023-01-25 21:00:00');
+(1, 1, 'Administrador', '2023-01-10 08:30:00', '2023-01-10 08:30:00', '2023-01-10 08:30:00'),
+(2, 2, 'Comercio', '2023-01-15 14:20:00', '2023-01-15 14:20:00', '2023-01-15 14:20:00'),
+(3, 6, 'Usuario', '2023-01-25 21:00:00', '2023-01-25 21:00:00', '2023-01-25 21:00:00');
 
 SET FOREIGN_KEY_CHECKS = 1;
