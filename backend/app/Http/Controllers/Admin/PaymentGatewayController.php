@@ -76,7 +76,7 @@ class PaymentGatewayController extends Controller
         
         //dd('https://thenuap.com/payment-response?orders='.$ordersIDs);
         return view('admin.payments.payment-gateway', [
-            'key' => '***REMOVED***',
+            'key' => config('services.epayco.public_key'),
             'amount' => $total,
             'name' => $name,
             'description' => $description,
@@ -114,7 +114,7 @@ class PaymentGatewayController extends Controller
             $orders = explode('-', $request->input('orders'));
             
             $p_cust_id_client = $data['x_cust_id_cliente'];
-            $p_key = '***REMOVED***';
+            $p_key = config('services.epayco.p_key');
             $x_ref_payco = $data['x_ref_payco'];
             $x_transaction_id = $data['x_transaction_id'];
             $x_amount = $data['x_amount'];
@@ -172,7 +172,7 @@ class PaymentGatewayController extends Controller
             $orders = explode('-', $request->input('orders'));
             
             $p_cust_id_client = $data['x_cust_id_cliente'];
-            $p_key = '***REMOVED***';
+            $p_key = config('services.epayco.p_key');
             $x_ref_payco = $data['x_ref_payco'];
             $x_transaction_id = $data['x_transaction_id'];
             $x_amount = $data['x_amount'];

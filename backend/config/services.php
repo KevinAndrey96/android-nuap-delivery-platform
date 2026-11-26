@@ -40,4 +40,9 @@ return [
         ],
     ],
 
+    'epayco' => [
+        'public_key' => env('EPAYCO_PUBLIC_KEY'),
+        'p_key' => env('EPAYCO_P_KEY'),
+    ],
+
 ];
